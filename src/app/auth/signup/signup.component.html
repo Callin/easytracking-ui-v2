@@ -1,0 +1,11 @@
+<form (ngSubmit)="onSignup(f)" #f="ngForm">
+  <div class="form-group">
+    <label for="email">Mail</label>
+    <input type="email" id="email" name="email" ngModel="" class="mat-form-field">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" ngModel="" class="mat-form-field">
+  </div>
+  <button mat-button color="primary" type="submit">Sign up</button>
+</form>
