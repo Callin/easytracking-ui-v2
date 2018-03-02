@@ -1,11 +1,22 @@
-<form (ngSubmit)="onSignup(f)" #f="ngForm">
-  <div class="form-group">
-    <label for="email">Mail</label>
-    <input type="email" id="email" name="email" ngModel="" class="mat-form-field">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" ngModel="" class="mat-form-field">
-  </div>
-  <button mat-button color="primary" type="submit">Sign up</button>
-</form>
+
+<mat-card class="sign-in-card">
+  <mat-card-header>
+    <!--<div mat-card-avatar class="example-header-image"></div>-->
+    <mat-card-title>Sign up</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="onSignup(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="email">Mail</label>
+        <input type="email" id="email" name="email" ngModel="" class="mat-form-field">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" ngModel="" class="mat-form-field">
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" type="submit">Sign up</button>
+  </mat-card-actions>
+</mat-card>

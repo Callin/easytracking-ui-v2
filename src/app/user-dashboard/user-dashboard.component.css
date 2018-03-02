@@ -1,4 +1,4 @@
-.sign-in-card {
+.dashboard-card {
   max-width: 400px;
   width: 50%;
   max-height:400px;
@@ -6,10 +6,6 @@
   margin: 10% auto auto;
 }
 
-.form-input {
-  width: 85%;
-}
-
 .easytracking-logo {
-  margin: auto auto 30px;
+  margin: auto auto 10px;
 }

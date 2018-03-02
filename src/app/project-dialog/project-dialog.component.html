@@ -1,0 +1,28 @@
+<mat-form-field class='project-dialog-input'>
+  <input matInput placeholder='Title' [(ngModel)]='data.project.name'>
+</mat-form-field>
+
+<div mat-dialog-content class="project-dialog-content">
+  <mat-form-field class='project-dialog-input-textarea'>
+      <textarea matInput class='project-dialog-input-textarea' placeholder='Description'
+                [(ngModel)]='data.project.description'></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select multiple placeholder="Users" >
+      <mat-option aria-multiselectable="true" *ngFor="let user of data.allUsers">
+        {{user.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+  </div>
+  <!--<div style="float: right; width: 10%">-->
+  <!--<button mat-raised-button color="warn" (click)='deleteProject(data)' *ngIf='!data.isNew'>Delete-->
+  <!--</button>-->
+  <!--</div>-->
+</div>

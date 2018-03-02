@@ -18,6 +18,9 @@ export class SignupComponent implements OnInit {
 // call the server
     const email = form.value.email;
     const password = form.value.password;
+
+
+    console.log('Credentials= email: ' + email + ' password: ' + password);
   }
 
 }
