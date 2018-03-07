@@ -17,6 +17,8 @@ export class UserDashboardComponent implements OnInit {
 
   allProjects: Project[] = [];
 
+  currentProject: Project;
+
   constructor(public dialog: MatDialog,
               private projectBoardService: ProjectBoardService) { }
 
@@ -25,7 +27,16 @@ export class UserDashboardComponent implements OnInit {
       this.allProjects = projectList;
     });
 
+    this.projectBoardService.changeCurrentProject.subscribe(project => {
+      this.currentProject = project;
+    });
+
     this.projectBoardService.onGetAllProjects();
+  }
+
+  changeCurrentProject(project: Project){
+    this.currentProject = project;
+    this.projectBoardService.changeCurrentProject.emit(this.currentProject);
   }
 
   openNewProjectDialog(){
