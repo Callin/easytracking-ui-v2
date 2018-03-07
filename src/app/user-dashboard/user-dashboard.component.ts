@@ -3,6 +3,7 @@ import {Project} from '../dto/project';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {User} from '../dto/user';
 import {MatDialog} from '@angular/material';
+import {ProjectBoardService} from '../project-board/project-board-service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -14,9 +15,17 @@ export class UserDashboardComponent implements OnInit {
   allUserList: User[] = [new User(1, 'Dragos', 'dragos@sabau.com'),
     new User(2, 'Bogdan', 'bogdan@sabau.com'), new User(3, 'David', 'david@art.com')];
 
-  constructor(public dialog: MatDialog) { }
+  allProjects: Project[] = [];
+
+  constructor(public dialog: MatDialog,
+              private projectBoardService: ProjectBoardService) { }
 
   ngOnInit() {
+    this.projectBoardService.changeProjectList.subscribe(projectList => {
+      this.allProjects = projectList;
+    });
+
+    this.projectBoardService.onGetAllProjects();
   }
 
   openNewProjectDialog(){
@@ -27,7 +36,7 @@ export class UserDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
-      // minHeight: 550, // assumes px
+      minHeight: 350, // assumes px
       data: {project, isNew, allUsers}
     });
 
@@ -36,7 +45,7 @@ export class UserDashboardComponent implements OnInit {
       if (result != null) {
         // this.allUserStories = [];
         // result.project.userList = result.allUsers;
-        // this.onCreateProject(result.project);
+        this.projectBoardService.onCreateProject(result.project);
       }
     });
 

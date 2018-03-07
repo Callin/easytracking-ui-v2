@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>dialpad</mat-icon>
+          <span>Redial</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>voicemail</mat-icon>
+          <span>Check voicemail</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_off</mat-icon>
+          <span>Disable alerts</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <div class="col">Filter by:</div>
+    <div class="col">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="User" aria-label="User" [matAutocomplete]="autocompleteUser">
+          <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
+          <mat-autocomplete #autocompleteUser="matAutocomplete">
+            <mat-option>
+              <!--<mat-option *ngFor="let state of filteredStates | async" [value]="state.name">-->
+              Dragos
+              <!--<img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />-->
+              <!--<span>{{ state.name }}</span> |-->
+              <!--<small>Population: {{state.population}}</small>-->
+            </mat-option>
+            <mat-option>
+              Bogdan
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="col">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Sprint" aria-label="Sprint" [matAutocomplete]="autocompleteSprint">
+          <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
+          <mat-autocomplete #autocompleteSprint="matAutocomplete">
+            <mat-option>
+              <!--<mat-option *ngFor="let state of filteredStates | async" [value]="state.name">-->
+              Sprint1
+              <!--<img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />-->
+              <!--<span>{{ state.name }}</span> |-->
+              <!--<small>Population: {{state.population}}</small>-->
+            </mat-option>
+            <mat-option>
+              Sprint2
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <mat-divider class="menu-diveder"></mat-divider>
+
+  <div class="row">
+    <div class="col">New</div>
+    <div class="col">In Progress</div>
+    <div class="col">In Review</div>
+    <div class="col">Done</div>
+  </div>
+  <mat-divider class="menu-diveder"></mat-divider>
+
+  <div class="row">
+    <div class="col">
+      <mat-card class="board-item">
+        <!--<mat-card class="board-item" *ngIf="filterItems(userStory, filter, NEW)">-->
+        <mat-card-header class="board-user-story-header">
+          <!--<mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">-->
+          <mat-card-title>One userStory
+            <!--<mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}-->
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="owner">Owner: Dragos</div>
+
+          <mat-form-field>
+            <mat-select>
+              <!--<mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>-->
+              <mat-option>New</mat-option>
+              <!--<mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>-->
+            </mat-select>
+          </mat-form-field>
+
+          <div>Priority: 0</div>
+          <div>Estimate: 1 h</div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col">User Story Two</div>
+    <div class="col">User Story Three</div>
+    <div class="col">User Story Four</div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="row">
+    <div class="col">User Story One</div>
+    <div class="col">User Story Two</div>
+    <div class="col">User Story Three</div>
+    <div class="col">User Story Four</div>
+  </div>
+
+  <mat-divider></mat-divider>
+</div>

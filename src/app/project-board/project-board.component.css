@@ -1,0 +1,36 @@
+.menu-diveder {
+  background-color: orangered;
+}
+
+.board-item {
+  height: 200px;
+  width: 260px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.board-user-story-header {
+  background-color: #673ab7;
+  color: #ffffff;
+}
+
+.board-bug-header {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
+.board-task-header {
+  background-color: #ffd740;
+  color: #000000;
+}
+
+.mat-card-title {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.owner {
+  padding-top: 10px;
+}
+

@@ -45,10 +45,14 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
+import { ProjectBoardComponent } from './project-board/project-board.component';
+import {ProjectBoardService} from './project-board/project-board-service';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SiginComponent},
+  {path: 'project', component: ProjectBoardComponent},
   {path: '', component: UserDashboardComponent}
 ];
 
@@ -58,17 +62,23 @@ const appRoutes: Routes = [
     SignupComponent,
     SiginComponent,
     UserDashboardComponent,
-    ProjectDialogComponent
+    ProjectDialogComponent,
+    ProjectBoardComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,
     MatCardModule,
     MatSelectModule,
     MatListModule,
+    MatMenuModule,
+    MatGridListModule,
+    MatIconModule,
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
@@ -112,7 +122,7 @@ const appRoutes: Routes = [
     RouterModule
   ],
   entryComponents: [SignupComponent, SiginComponent, ProjectDialogComponent],
-  providers: [],
+  providers: [ProjectBoardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

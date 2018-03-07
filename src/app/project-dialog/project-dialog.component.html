@@ -5,7 +5,8 @@
 <div mat-dialog-content class="project-dialog-content">
   <mat-form-field class='project-dialog-input-textarea'>
       <textarea matInput class='project-dialog-input-textarea' placeholder='Description'
-                [(ngModel)]='data.project.description'></textarea>
+                [(ngModel)]='data.project.description' matTextareaAutosize matAutosizeMinRows="2"
+                matAutosizeMaxRows="5"></textarea>
   </mat-form-field>
   <mat-form-field>
     <mat-select multiple placeholder="Users" >
