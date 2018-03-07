@@ -52,7 +52,7 @@ import {HttpClientModule} from '@angular/common/http';
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SiginComponent},
-  {path: 'project', component: ProjectBoardComponent},
+  {path: 'project/:id', component: ProjectBoardComponent},
   {path: '', component: UserDashboardComponent}
 ];
 

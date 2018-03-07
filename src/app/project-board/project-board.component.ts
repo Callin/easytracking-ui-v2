@@ -10,12 +10,17 @@ import {Project} from "../dto/project";
 export class ProjectBoardComponent implements OnInit {
 
   allProjects: Project[] = [];
+  currentProject: Project;
 
   constructor(private projectBoardService: ProjectBoardService) { }
 
   ngOnInit() {
     this.projectBoardService.changeProjectList.subscribe(projectList => {
       this.allProjects = projectList;
+    });
+
+    this.projectBoardService.changeCurrentProject.subscribe(project => {
+      this.currentProject = project;
     });
   }
 

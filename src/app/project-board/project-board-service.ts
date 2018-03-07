@@ -22,9 +22,11 @@ export class ProjectBoardService {
   allProjects: Project[] = [];
   allSprints: Sprint[] = [];
   allUsers: User[] = [];
+  currentProject: Project;
 
   // @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
   @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
+  @Output() changeCurrentProject: EventEmitter<Project> = new EventEmitter();
   @Output() changeSprintList: EventEmitter<Sprint[]> = new EventEmitter();
   @Output() changeUserList: EventEmitter<User[]> = new EventEmitter();
 
