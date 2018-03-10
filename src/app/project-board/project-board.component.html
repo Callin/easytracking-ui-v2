@@ -1,66 +1,54 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>dialpad</mat-icon>
-          <span>Redial</span>
-        </button>
-        <button mat-menu-item disabled>
-          <mat-icon>voicemail</mat-icon>
-          <span>Check voicemail</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Disable alerts</span>
-        </button>
-      </mat-menu>
+    <div class="col-md-4">
+      <a routerLink="/" routerLinkActive="active">
+        <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg"
+             alt="Easytracking logo">
+      </a>
     </div>
-
-    <div class="col">Filter by:</div>
-    <div class="col">
+  </div>
+  <div class="row">
+    <div class="col-md-2">
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="User" aria-label="User" [matAutocomplete]="autocompleteUser">
+          <input matInput placeholder="Project" aria-label="Project" [matAutocomplete]="autocompleteProject">
           <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
-          <mat-autocomplete #autocompleteUser="matAutocomplete">
-            <mat-option>
-              <!--<mat-option *ngFor="let state of filteredStates | async" [value]="state.name">-->
-              Dragos
-              <!--<img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />-->
-              <!--<span>{{ state.name }}</span> |-->
-              <!--<small>Population: {{state.population}}</small>-->
-            </mat-option>
-            <mat-option>
-              Bogdan
+          <mat-autocomplete #autocompleteProject="matAutocomplete">
+            <mat-option *ngFor="let project of allProjects" [value]="project.name">{{project.name}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>
     </div>
 
-    <div class="col">
+    <div class="col-md-2">
       <form class="example-form">
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Sprint" aria-label="Sprint" [matAutocomplete]="autocompleteSprint">
           <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
           <mat-autocomplete #autocompleteSprint="matAutocomplete">
-            <mat-option>
-              <!--<mat-option *ngFor="let state of filteredStates | async" [value]="state.name">-->
-              Sprint1
-              <!--<img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />-->
-              <!--<span>{{ state.name }}</span> |-->
-              <!--<small>Population: {{state.population}}</small>-->
-            </mat-option>
-            <mat-option>
-              Sprint2
+            <mat-option *ngFor="let sprint of currentProject.sprintList" [value]="sprint.sprintNumber">{{sprint.sprintNumber}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>
+    </div>
+
+    <div class="col-md-2">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="User" aria-label="User" [matAutocomplete]="autocompleteUser">
+          <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
+          <mat-autocomplete #autocompleteUser="matAutocomplete">
+            <mat-option *ngFor="let user of currentProject.userList" [value]="user">{{user.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="col-md-2">
+      Backlog link
     </div>
   </div>
 

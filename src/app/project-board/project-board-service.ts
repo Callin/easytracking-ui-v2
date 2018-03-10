@@ -6,17 +6,11 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Project} from '../dto/project';
 import {User} from '../dto/user';
 import {Sprint} from '../dto/sprint';
+import {AppConstants} from "../util/app-constants";
 
 
 @Injectable()
 export class ProjectBoardService {
-  serverUrl = 'http://localhost:4200/api';
-  userStoryUrl = this.serverUrl + '/userstory';
-  projectUrl = this.serverUrl + '/project';
-  sprintUrl = this.serverUrl + '/sprint';
-  taskUrl = this.serverUrl + '/task';
-  bugUrl = this.serverUrl + '/bug';
-  userUrl = this.serverUrl + '/user';
 
   // allUserStoryList: UserStory[] = [];
   allProjects: Project[] = [];
@@ -31,7 +25,6 @@ export class ProjectBoardService {
   @Output() changeUserList: EventEmitter<User[]> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
-
   }
 
   onGetAllProjects() { // to be changed to getAllProjectsByUserId
@@ -47,7 +40,7 @@ export class ProjectBoardService {
 
   getAllProjects() { // to be changed to getAllProjectsByUserId
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Project[]>(this.projectUrl + '/all', {headers: header})
+    return this.httpClient.get<Project[]>(AppConstants.PROJECT_URL + '/all', {headers: header})
       .map(
         (projects) => {
           return projects;
@@ -74,7 +67,7 @@ export class ProjectBoardService {
 
   createProject(project: Project) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<Project>(this.projectUrl, project, {headers: header})
+    return this.httpClient.post<Project>(AppConstants.PROJECT_URL, project, {headers: header})
       .map(
         (projectResponse) => {
           return projectResponse;
@@ -85,5 +78,37 @@ export class ProjectBoardService {
           return Observable.throw(error);
         }
       );
+  }
+
+  onGetCurrentProject(projectId: number) { // to be changed to getAllProjectsByUserId
+    this.getCurrentProject(projectId)
+      .subscribe(
+        (project) => {
+          this.currentProject = project;
+          this.changeCurrentProject.emit(this.currentProject);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getCurrentProject(projectId: number) { // to be changed to getAllProjectsByUserId
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header})
+      .map(
+        (projects) => {
+          return projects;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onCurrentProjectChange(project: Project) {
+    this.currentProject.id = project.id;
+    this.currentProject.name = project.name;
+    this.changeCurrentProject.emit(this.currentProject);
   }
 }

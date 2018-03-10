@@ -36,7 +36,7 @@ export class UserDashboardComponent implements OnInit {
 
   changeCurrentProject(project: Project){
     this.currentProject = project;
-    this.projectBoardService.changeCurrentProject.emit(this.currentProject);
+    this.projectBoardService.onCurrentProjectChange(project);
   }
 
   openNewProjectDialog(){
