@@ -40,7 +40,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 import {RouterModule, Routes} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -82,6 +82,7 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   exports: [

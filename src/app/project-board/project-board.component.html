@@ -1,17 +1,25 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col">
       <a routerLink="/" routerLinkActive="active">
         <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg"
              alt="Easytracking logo">
       </a>
+    </div>
+    <div class="col-md-2">
+      <mat-icon class="account-icon" color="link" matTooltip="Edit project" (click)="openEditProjectDialog()">settings
+      </mat-icon>
+      <mat-icon class="account-icon" color="link" matTooltip="Edit user">account_box</mat-icon>
     </div>
   </div>
   <div class="row">
     <div class="col-md-2">
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Project" aria-label="Project" [matAutocomplete]="autocompleteProject">
+          <input matInput
+                 placeholder="Project"
+                 aria-label="Project"
+                 [matAutocomplete]="autocompleteProject">
           <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
           <mat-autocomplete #autocompleteProject="matAutocomplete">
             <mat-option *ngFor="let project of allProjects" [value]="project.name">{{project.name}}
@@ -24,10 +32,15 @@
     <div class="col-md-2">
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Sprint" aria-label="Sprint" [matAutocomplete]="autocompleteSprint">
+          <input matInput
+                 placeholder="Sprint"
+                 aria-label="Sprint"
+                 [matAutocomplete]="autocompleteSprint">
           <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
           <mat-autocomplete #autocompleteSprint="matAutocomplete">
-            <mat-option *ngFor="let sprint of currentProject.sprintList" [value]="sprint.sprintNumber">{{sprint.sprintNumber}}
+            <mat-option *ngFor="let sprint of currentProject.sprintList"
+                        [value]="sprint.sprintNumber">
+              {{sprint.sprintNumber}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -37,10 +50,15 @@
     <div class="col-md-2">
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="User" aria-label="User" [matAutocomplete]="autocompleteUser">
+          <input matInput
+                 placeholder="User"
+                 aria-label="User"
+                 [matAutocomplete]="autocompleteUser">
           <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
           <mat-autocomplete #autocompleteUser="matAutocomplete">
-            <mat-option *ngFor="let user of currentProject.userList" [value]="user">{{user.name}}
+            <mat-option *ngFor="let user of currentProject.userList"
+                        [value]="user.name">
+              {{user.name}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

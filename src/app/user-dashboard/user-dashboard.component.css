@@ -9,3 +9,13 @@
 .easytracking-logo {
   margin: auto auto 10px;
 }
+
+.edit-project {
+  display: inline;
+  padding-right: 5px;
+  font-size: 17px;
+}
+
+.project-list {
+  margin-bottom: 30px;
+}

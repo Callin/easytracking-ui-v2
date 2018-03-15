@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Project} from '../dto/project';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {User} from '../dto/user';
@@ -20,7 +20,8 @@ export class UserDashboardComponent implements OnInit {
   currentProject: Project;
 
   constructor(public dialog: MatDialog,
-              private projectBoardService: ProjectBoardService) { }
+              private projectBoardService: ProjectBoardService) {
+  }
 
   ngOnInit() {
     this.projectBoardService.changeProjectList.subscribe(projectList => {
@@ -31,15 +32,15 @@ export class UserDashboardComponent implements OnInit {
       this.currentProject = project;
     });
 
-    this.projectBoardService.onGetAllProjects();
+    this.projectBoardService.onGetAllProjects('true');
   }
 
-  changeCurrentProject(project: Project){
+  changeCurrentProject(project: Project) {
     this.currentProject = project;
     this.projectBoardService.onCurrentProjectChange(project);
   }
 
-  openNewProjectDialog(){
+  openNewProjectDialog() {
     // show predefined data
     const project = Project.getBlankProject();
     const isNew = true;

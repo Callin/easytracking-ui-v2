@@ -5,6 +5,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Sprint} from '../dto/sprint';
 import {User} from '../dto/user';
 import {BoardFilterContainer} from './board-filter-container';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
+import {MatDialog} from '@angular/material';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-project-board',
@@ -16,12 +19,14 @@ export class ProjectBoardComponent implements OnInit {
   readonly ALL_NAME: string = 'ALL';
 
   allProjects: Project[] = [];
+  allUsers: User[] = [];
   currentProject: Project = Project.getBlankProject();
   currentSprint: Sprint = new Sprint(this.ALL_ID, null, null, this.ALL_ID, null);
-  currentUser:User = new User(this.ALL_ID, this.ALL_NAME, null);
+  currentUser: User = new User(this.ALL_ID, this.ALL_NAME, null);
 
   constructor(private projectBoardService: ProjectBoardService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -32,13 +37,50 @@ export class ProjectBoardComponent implements OnInit {
     this.projectBoardService.changeCurrentProject.subscribe(project => {
       this.currentProject = project;
     });
+    this.projectBoardService.changeUserList.subscribe(userList => {
+      this.allUsers = userList;
+    });
+
 
     this.currentProject.id = this.route.snapshot.params['id'];
-    console.log('Project Id: ' + this.currentProject.id);
 
     this.projectBoardService.onGetCurrentProject(this.currentProject.id);
 
-    this.projectBoardService.onGetAllProjects();
+    this.projectBoardService.onGetAllUsers();
+
+    this.projectBoardService.onGetAllProjects('true');
+  }
+
+  openEditProjectDialog() {
+    let projectNameFormControl = new FormControl(this.currentProject.name);
+    let projectDescriptionFormControl = new FormControl(this.currentProject.description);
+    let projectUsersFormControl = new FormControl([]);
+    const allUsers = this.allUsers;
+
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      width: '60%',
+      height: '40%',
+      minHeight: 350, // assumes px
+      data: {
+        projectNameFormControl,
+        projectDescriptionFormControl,
+        projectUsersFormControl,
+        allUsers
+      }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != null) {
+          // this.allUserStories = [];
+          this.currentProject.userList = result.projectUsersFormControl.value;
+          this.currentProject.name = result.projectNameFormControl.value;
+          this.currentProject.description = result.projectDescriptionFormControl.value;
+
+          this.projectBoardService.onUpdateProject(this.currentProject);
+        }
+      });
+
   }
 
   filterItems(item: any, filterContainer: BoardFilterContainer, rowStatus: string): boolean {

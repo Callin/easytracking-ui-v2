@@ -1,19 +1,21 @@
 <mat-card class="dashboard-card">
   <mat-card-header>
-    <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg" alt="Easytracking logo">
+    <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg"
+         alt="Easytracking logo">
     <!--<mat-card-title>Available projects:</mat-card-title>-->
   </mat-card-header>
   <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
   <mat-card-content>
     <h3>Available projects</h3>
-    <mat-nav-list>
-      <a mat-list-item *ngFor="let project of allProjects"
-         routerLink="/project/{{project.id}}" routerLinkActive="active"> {{ project.name }} </a>
-      <!--<mat-list-item> Pepper </mat-list-item>-->
-      <!--<mat-list-item> Salt </mat-list-item>-->
-      <!--<mat-list-item> Paprika </mat-list-item>-->
-    </mat-nav-list>
-
-    <button mat-raised-button color="primary" (click)="openNewProjectDialog()" matTooltip="Add new project">Add new project</button>
+    <div class="project-list">
+      <div *ngFor="let project of allProjects">
+        <div class="edit-project">
+          <a routerLink="/project/{{project.id}}" routerLinkActive="active"> {{ project.name }} </a>
+        </div>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="openNewProjectDialog()" matTooltip="Add new project">Add new
+      project
+    </button>
   </mat-card-content>
 </mat-card>
