@@ -1,0 +1,66 @@
+  <mat-form-field class='board-item-dialog-input'>
+    <input matInput
+           placeholder="{{data.boardItemType}} Title"
+           [formControl]='data.name'>
+  </mat-form-field>
+
+  <div mat-dialog-content class='board-item-dialog-content'>
+    <mat-form-field class='board-item-dialog-input-textarea'>
+      <textarea matInput
+                class='board-item-textarea-description'
+                placeholder='Description'
+                [formControl]='data.description' >
+      </textarea>
+    </mat-form-field>
+
+    <mat-grid-list cols='2' rowHeight='11:1'>
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <mat-select placeholder='Owner ' [formControl]='data.user'>
+            <mat-option *ngFor='let user of data.allUsers'
+                        [value]='user'>
+              {{user.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <input matInput
+                 placeholder='Priority'
+                 [formControl]='data.priority'>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <mat-select placeholder='Status'
+                      [formControl]='data.status'>
+            <mat-option *ngFor='let status of data.statusList'
+                        value={{status}}>
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <input matInput
+                 placeholder='Estimation'
+                 [formControl]='data.estimation'>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div mat-dialog-actions>
+    <div style="float: left; width: 90%">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+    <div style="float: right; width: 10%">
+      <button mat-raised-button color="warn" (click)='deleteBoardItem(data)' *ngIf='!data.isNew'>Delete
+      </button>
+    </div>
+  </div>

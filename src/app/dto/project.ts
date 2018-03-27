@@ -1,12 +1,13 @@
 
 import {User} from './user';
 import {Sprint} from './sprint';
+import {UserStory} from "./user-story";
 
 export class Project {
 
   id: number;
 
-  name: string;
+  title: string;
 
   description: string;
 
@@ -14,17 +15,21 @@ export class Project {
 
   sprintList: Sprint[];
 
+  userStoryList: UserStory[];
 
-  constructor(id: number, name: string, description: string, userList: User[], sprintList: Sprint[]) {
+
+  constructor(id: number, title: string, description: string, userList: User[], sprintList: Sprint[], userStoryList: UserStory[]) {
     this.id = id;
-    this.name = name;
+    this.title = title;
     this.description = description;
     this.userList = userList;
     this.sprintList = sprintList;
+    this.userStoryList = userStoryList;
   }
 
   static getBlankProject(): Project {
     return new Project(
+      null,
       null,
       null,
       null,

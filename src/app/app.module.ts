@@ -37,7 +37,7 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule,
+  MatTooltipModule
 } from '@angular/material';
 import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -46,8 +46,14 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 import { ProjectBoardComponent } from './project-board/project-board.component';
-import {ProjectBoardService} from './project-board/project-board-service';
+import {ProjectService} from './service/project-service';
 import {HttpClientModule} from '@angular/common/http';
+import { BoardItemDialogComponent } from './board-item-dialog/board-item-dialog.component';
+import {UserService} from './service/user-service';
+import {TaskService} from './service/task-service';
+import {BugService} from './service/bug-service';
+import {UserStoryService} from './service/user-story-service';
+import {SprintService} from './service/sprint-service';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -63,7 +69,8 @@ const appRoutes: Routes = [
     SiginComponent,
     UserDashboardComponent,
     ProjectDialogComponent,
-    ProjectBoardComponent
+    ProjectBoardComponent,
+    BoardItemDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -122,8 +129,15 @@ const appRoutes: Routes = [
     MatTooltipModule,
     RouterModule
   ],
-  entryComponents: [SignupComponent, SiginComponent, ProjectDialogComponent],
-  providers: [ProjectBoardService],
+  entryComponents: [SignupComponent, SiginComponent, ProjectDialogComponent, BoardItemDialogComponent],
+  providers: [
+    ProjectService,
+    UserService,
+    UserStoryService,
+    BugService,
+    TaskService,
+    SprintService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

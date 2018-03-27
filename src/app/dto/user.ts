@@ -8,4 +8,8 @@ export class User {
     this.name = name;
     this.email = email;
   }
+
+  static getBlankUser(): User {
+    return new User(null, null, null);
+  }
 }

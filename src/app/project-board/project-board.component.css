@@ -1,12 +1,16 @@
-.menu-diveder {
+.menu-divider {
   background-color: orangered;
+}
+
+.mat-divider-on-board {
+  width: 100%;
 }
 
 .board-item {
   height: 200px;
   width: 260px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   padding: 10px;
 }
 
@@ -41,4 +45,12 @@
 .account-icon {
   font-size: 30px;
   margin-right: 15px;
+}
+
+.add-task-bug{
+  float: right;
+}
+
+.task-color {
+  color: #ffd740;
 }

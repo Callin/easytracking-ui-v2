@@ -3,7 +3,7 @@ import {Project} from '../dto/project';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {User} from '../dto/user';
 import {MatDialog} from '@angular/material';
-import {ProjectBoardService} from '../project-board/project-board-service';
+import {ProjectService} from '../service/project-service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -20,7 +20,7 @@ export class UserDashboardComponent implements OnInit {
   currentProject: Project;
 
   constructor(public dialog: MatDialog,
-              private projectBoardService: ProjectBoardService) {
+              private projectBoardService: ProjectService) {
   }
 
   ngOnInit() {

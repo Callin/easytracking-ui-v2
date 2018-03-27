@@ -1,0 +1,24 @@
+
+.board-item-dialog-input {
+  width: 100%;
+}
+
+.board-item-dialog-content {
+  width: 100%;
+}
+
+.board-item-dialog-input-textarea {
+  width: 100%;
+  min-height: 20%;
+  max-height: 80%;
+}
+
+.board-item-textarea-description {
+  min-width: 500px;
+  min-height: 100px;
+}
+
+.text-input-half-width {
+  width: 40%;
+  height: 100%;
+}

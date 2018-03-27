@@ -4,27 +4,36 @@ import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Project} from '../dto/project';
-import {User} from '../dto/user';
-import {Sprint} from '../dto/sprint';
-import {AppConstants} from "../util/app-constants";
+import {AppConstants} from '../util/app-constants';
 
 
 @Injectable()
-export class ProjectBoardService {
+export class ProjectService {
 
-  // allUserStoryList: UserStory[] = [];
   allProjects: Project[] = [];
-  allSprints: Sprint[] = [];
-  allUsers: User[] = [];
   currentProject: Project;
 
-  // @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
   @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
   @Output() changeCurrentProject: EventEmitter<Project> = new EventEmitter();
-  @Output() changeSprintList: EventEmitter<Sprint[]> = new EventEmitter();
-  @Output() changeUserList: EventEmitter<User[]> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  onGetCurrentProject(projectId: number) { // to be changed to getAllProjectsByUserId
+    this.getProjectById(projectId)
+      .subscribe(project => {
+          this.currentProject = project;
+          this.changeCurrentProject.emit(this.currentProject);
+        }
+      );
+  }
+
+  getProjectById(projectId: number): Observable<Project> { // to be changed to getAllProjectsByUserId
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header})
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
   }
 
   onGetAllProjects(brief: string) { // to be changed to getAllProjectsByUserId
@@ -47,7 +56,6 @@ export class ProjectBoardService {
         return Observable.throw(error);
       });
   }
-
 
   onCreateProject(project: Project) {
     this.createProject(project)
@@ -87,45 +95,32 @@ export class ProjectBoardService {
       });
   }
 
-  onGetAllUsers() {
-    this.getAllUsers()
-      .subscribe(response => {
-          this.allUsers = response;
-          this.changeUserList.emit(this.allUsers);
-        }
-      );
-  }
-
-  getAllUsers() {
-    const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<User[]>(AppConstants.USER_URL + "/all", {headers: header})
-      .catch((error: Response) => {
-        return Observable.throw(error);
-      });
-  }
-
-  onGetCurrentProject(projectId: number) { // to be changed to getAllProjectsByUserId
-    console.log('inside get current project: ' + projectId);
-    this.getProjectByID(projectId)
-      .subscribe(project => {
-          console.log('inside map project: ' + project.id);
-          this.currentProject = project;
-          this.changeCurrentProject.emit(this.currentProject);
-        }
-      );
-  }
-
-  getProjectByID(projectId: number): Observable<Project> { // to be changed to getAllProjectsByUserId
-    const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header})
-      .catch((error: Response) => {
-        return Observable.throw(error);
-      });
-  }
-
   onCurrentProjectChange(project: Project) {
     this.currentProject.id = project.id;
-    this.currentProject.name = project.name;
+    this.currentProject.title = project.title;
     this.changeCurrentProject.emit(this.currentProject);
+  }
+
+  onDeleteProject(project: Project) {
+    this.deleteProject(project.id).subscribe(
+      (response) => {
+        if (response == null) {
+          console.log('Project was removed.');
+          this.allProjects.splice(this.allProjects.indexOf(project), 1);
+          this.changeProjectList.emit(this.allProjects);
+        }
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  deleteProject(projectId: number) {
+    return this.httpClient.delete(AppConstants.PROJECT_URL + '/' + projectId)
+      .map((response) => {
+        return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
   }
 }
