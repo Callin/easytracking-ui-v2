@@ -33,7 +33,7 @@ export class BoardItemDialogComponent implements OnInit {
     } else if (data.boardItemType === BoardItemTypeEnum.TASK) {
       this.taskService.onDeleteTask(data.id.value, data.userStoryId);
     } else if (data.boardItemType === BoardItemTypeEnum.BUG) {
-      this.bugService.onDeleteBug(data.id.value);
+      this.bugService.onDeleteBug(data.id.value, data.userStoryId);
     }
 
     this.dialogRef.close();

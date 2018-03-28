@@ -168,10 +168,10 @@ export class ProjectBoardComponent implements OnInit {
           user.id = result.user.value.id;
           userStory.user = user;
 
-          let project: Project = Project.getBlankProject();
-          project.id = this.currentProject.id;
+          // let project: Project = Project.getBlankProject();
+          // project.id = this.currentProject.id;
 
-          userStory.project = project;
+          userStory.project = this.currentProject;
 
           console.log('On create user story: ');
           this.userStoryService.onCreateUserStory(userStory);
@@ -233,9 +233,9 @@ export class ProjectBoardComponent implements OnInit {
 
     let name = new FormControl(task.name);
     let description = new FormControl(task.description);
-    let status = new FormControl(task.status);
-    let priority = new FormControl(task.priority);
-    let estimation = new FormControl(task.estimation);
+    let status = new FormControl(BoardItemStatusEnum.NEW);
+    let priority = new FormControl(2);
+    let estimation = new FormControl(2);
     let user = new FormControl(task.user);
 
     const allUsers = this.allUsers;
@@ -260,9 +260,6 @@ export class ProjectBoardComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result != null) {
-          // this.allUserStories = [];
-          // name, description, status, priority, estimation, user,
-
           let taskToSave: Task = Task.getBlankTask();
           taskToSave.name = result.name.value;
           taskToSave.description = result.description.value;
@@ -272,12 +269,10 @@ export class ProjectBoardComponent implements OnInit {
 
           let user: User = User.getBlankUser();
           user.id = result.user.value.id;
+          user.name = result.user.name;
           taskToSave.user = user;
 
-          let parentUserStory: UserStory = UserStory.getBlankUserStory();
-          parentUserStory.id = userStory.id;
-
-          taskToSave.userStory = parentUserStory;
+          taskToSave.userStory = userStory;
 
           this.taskService.onCreateTask(taskToSave, userStory);
         }
@@ -345,9 +340,9 @@ export class ProjectBoardComponent implements OnInit {
 
     let name = new FormControl(bug.name);
     let description = new FormControl(bug.description);
-    let status = new FormControl(bug.status);
-    let priority = new FormControl(bug.priority);
-    let estimation = new FormControl(bug.estimation);
+    let status = new FormControl(BoardItemStatusEnum.NEW);
+    let priority = new FormControl(2);
+    let estimation = new FormControl(2);
     let user = new FormControl(bug.user);
 
     const allUsers = this.allUsers;

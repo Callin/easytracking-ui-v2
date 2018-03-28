@@ -40,7 +40,7 @@ export class UserStoryService {
   onCreateUserStory(userStory: UserStory) {
     this.createUserStory(userStory)
       .subscribe((response) => {
-          if (response == null) {
+          if (response !== null) {
             this.userStories.push(response);
             this.changeUserStoryList.emit(this.userStories);
           }

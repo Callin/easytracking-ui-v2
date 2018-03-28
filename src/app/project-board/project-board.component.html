@@ -108,9 +108,9 @@
         </mat-card-content>
       </mat-card>
       <!--- -------------- Tasks --------------  -->
-      <div *ngFor="let task of userStory.tasks" (click)="openExistingTaskDialog(userStory, task)">
+      <div *ngFor="let task of userStory.tasks">
         <mat-card class="board-item" *ngIf="filterItems(task, filter, NEW)">
-          <mat-card-header class="board-task-header">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(userStory, task)">
             <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -181,9 +181,9 @@
       </mat-card>
 
       <!--- -------------- Tasks --------------  -->
-      <div *ngFor="let task of userStory.tasks" (click)="openExistingTaskDialog(userStory, task)">
+      <div *ngFor="let task of userStory.tasks">
         <mat-card class="board-item" *ngIf="filterItems(task, filter, IN_PROGRESS)">
-          <mat-card-header class="board-task-header">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(userStory, task)">
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -254,13 +254,13 @@
       </mat-card>
 
       <!--- -------------- Tasks --------------  -->
-      <div *ngFor="let task of userStory.tasks" (click)="openExistingTaskDialog(userStory, task)">
+      <div *ngFor="let task of userStory.tasks">
         <mat-card class="board-item" *ngIf="filterItems(task, filter, IN_REVIEW)">
-          <mat-card-header class="board-task-header">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(userStory, task)">
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{(task.user != undefined)? (task.user.name):('')}}</div>
+            <div class="owner">Owner: {{task.user.name}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -328,13 +328,13 @@
       </mat-card>
 
       <!--- -------------- Tasks --------------  -->
-      <div *ngFor="let task of userStory.tasks" (click)="openExistingTaskDialog(userStory, task)">
+      <div *ngFor="let task of userStory.tasks">
         <mat-card class="board-item" *ngIf="filterItems(task, filter, DONE)">
-          <mat-card-header class="board-task-header">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(userStory, task)">
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{(task.user != undefined)? (task.user.name):('')}}</div>
+            <div class="owner">Owner: {{task.user.name}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>

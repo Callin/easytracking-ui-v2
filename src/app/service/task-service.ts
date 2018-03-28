@@ -3,28 +3,31 @@ import {EventEmitter, Injectable, Output} from '@angular/core';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Project} from '../dto/project';
-import {User} from '../dto/user';
-import {Sprint} from '../dto/sprint';
 import {AppConstants} from '../util/app-constants';
 import {Task} from '../dto/task';
 import {UserStory} from '../dto/user-story';
+import {UserStoryService} from './user-story-service';
 
 
 @Injectable()
 export class TaskService {
 
-  allUserStories: UserStory[] = [];
+  userStories: UserStory[] = [];
 
   @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private userStoryService: UserStoryService) {
+
+    this.userStoryService.changeUserStoryList.subscribe(userStories => {
+      this.userStories = userStories;
+    });
   }
 
   onCreateTask(task: Task, userStory: UserStory) {
     this.createTask(task)
       .subscribe((response) => {
-          if (response == null) {
+          if (response !== null) {
             userStory.tasks.push(response);
           }
         },
@@ -64,9 +67,12 @@ export class TaskService {
       .subscribe((response) => {
           if (response == null) {
             console.log('Task was removed.');
-            const taskList = this.allUserStories.find(userStory => userStory.id === userStoryid).tasks;
-            taskList.splice(taskList.indexOf(taskId), 1);
-            this.changeUserStoryList.emit(this.allUserStories);
+            let task: Task = Task.getBlankTask();
+            task.id = taskId;
+
+            const taskList = this.userStories.find(userStory => userStory.id === userStoryid).tasks;
+            taskList.splice(taskList.indexOf(task), 1);
+            this.changeUserStoryList.emit(this.userStories);
           }
         },
         (error) => console.log(error)
