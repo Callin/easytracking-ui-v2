@@ -80,10 +80,9 @@ export class UserStoryService {
     this.deleteUserStory(userStoryId)
       .subscribe((response) => {
           if (response == null) {
-            let userStory: UserStory = UserStory.getBlankUserStory();
-            userStory.id = userStoryId;
             console.log('User story was removed.');
-            this.userStories.splice(this.userStories.indexOf(userStory), 1);
+            const indexOfUserStory = this.userStories.findIndex(story => story.id === userStoryId);
+            this.userStories.splice(indexOfUserStory, 1);
             this.changeUserStoryList.emit(this.userStories);
           }
         },

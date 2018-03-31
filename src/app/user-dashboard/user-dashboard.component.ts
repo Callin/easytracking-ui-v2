@@ -14,8 +14,7 @@ import {UserService} from "../service/user-service";
 })
 export class UserDashboardComponent implements OnInit {
 
-  allUserList: User[] = [new User(1, 'Dragos', 'dragos@sabau.com'),
-    new User(2, 'Bogdan', 'bogdan@sabau.com'), new User(3, 'David', 'david@art.com')];
+  allUserList: User[] = [];
 
   allProjects: Project[] = [];
 

@@ -68,11 +68,9 @@ export class BugService {
       .subscribe((response) => {
           if (response == null) {
             console.log('Bug was removed.');
-            let bug: Bug = Bug.getBlankBug();
-            bug.id = bugId;
-
             const bugList = this.userStories.find(userStory => userStory.id === userStoryId).bugs;
-            bugList.splice(bugList.indexOf(bug), 1);
+            const indexOfBug = bugList.findIndex(bug => bug.id === bugId);
+            bugList.splice(indexOfBug, 1);
             this.changeUserStoryList.emit(this.userStories);
           }
         },

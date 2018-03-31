@@ -67,11 +67,9 @@ export class TaskService {
       .subscribe((response) => {
           if (response == null) {
             console.log('Task was removed.');
-            let task: Task = Task.getBlankTask();
-            task.id = taskId;
-
-            const taskList = this.userStories.find(userStory => userStory.id === userStoryid).tasks;
-            taskList.splice(taskList.indexOf(task), 1);
+            let taskList = this.userStories.find(userStory => userStory.id === userStoryid).tasks;
+            const indexOfTask = taskList.findIndex(task => task.id === taskId);
+            taskList.splice(indexOfTask, 1);
             this.changeUserStoryList.emit(this.userStories);
           }
         },
