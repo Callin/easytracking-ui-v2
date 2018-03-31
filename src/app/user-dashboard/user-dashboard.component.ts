@@ -80,16 +80,6 @@ export class UserDashboardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectForm.controls['users'].value;
 
-
-        // project.userList = (<FormArray>result.projectForm.get('users')).value;
-
-        // result.projectForm.users.value.forEach(userForm => {
-        //   let user: User = User.getBlankUser();
-        //   user.id = userForm.value.id;
-        //   user.name = userForm.value.name;
-        //   project.userList.push(user);
-        // });
-
         this.projectBoardService.onCreateProject(project);
       }
     });
