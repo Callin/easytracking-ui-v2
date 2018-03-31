@@ -88,7 +88,7 @@
           <mat-card-title>{{(userStory.name.length>25)? (userStory.name | slice:0:25)+'...':(userStory.name)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: </div>
+          <div class="owner">Owner: {{userStory.user.name}}</div>
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
               <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -114,7 +114,7 @@
             <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: </div>
+            <div class="owner">Owner: {{task.user.name}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -159,7 +159,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: </div>
+          <div class="owner">Owner: {{userStory.user.name}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -187,7 +187,7 @@
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: </div>
+            <div class="owner">Owner: {{task.user.name}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -232,7 +232,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: </div>
+          <div class="owner">Owner: {{userStory.user.name}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -306,7 +306,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: </div>
+          <div class="owner">Owner: {{userStory.user.name}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
