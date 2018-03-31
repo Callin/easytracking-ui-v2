@@ -80,8 +80,7 @@ export class ProjectService {
     this.updateProject(project)
       .subscribe(
         (response) => {
-          // this.allProjects.push(response);
-          // this.changeProjectList.emit(this.allProjects);
+          console.log('Project was updated');
         },
         (error) => console.log(error)
       );
