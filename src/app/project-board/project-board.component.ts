@@ -7,7 +7,7 @@ import {User} from '../dto/user';
 import {BoardFilterContainer} from './board-filter-container';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {MatDialog} from '@angular/material';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../service/user-service';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {UserStory} from '../dto/user-story';
@@ -48,6 +48,7 @@ export class ProjectBoardComponent implements OnInit {
               private userStoryService: UserStoryService,
               private taskService: TaskService,
               private bugService: BugService,
+              private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               public dialog: MatDialog) {
   }
@@ -80,31 +81,31 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openEditProjectDialog() {
-    let projectNameFormControl = new FormControl(this.currentProject.title);
-    let projectDescriptionFormControl = new FormControl(this.currentProject.description);
-    let projectUsersFormControl = new FormControl([]);
-    const allUsers = this.allUsers;
-    console.log('this all users size: ' + this.allUsers.length);
-    console.log('all users size: ' + allUsers.length);
+    let projectForm: FormGroup = this.formBuilder.group({
+      'title': new FormControl(this.currentProject.title, Validators.required),
+      'description': new FormControl(this.currentProject.description),
+      // 'users': this.formBuilder.array([new FormControl(this.currentProject.userList)])
+      'users': new FormControl(this.currentProject.userList)
+    });
 
+    const allTheUsers = this.allUsers;
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
       minHeight: 350, // assumes px
       data: {
-        projectNameFormControl,
-        projectDescriptionFormControl,
-        projectUsersFormControl,
-        allUsers
+        projectForm,
+        allTheUsers
       }
     });
 
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result != null) {
-          this.currentProject.userList = result.projectUsersFormControl.value;
-          this.currentProject.title = result.projectNameFormControl.value;
-          this.currentProject.description = result.projectDescriptionFormControl.value;
+          this.currentProject.title = result.projectForm.controls['title'].value;
+          this.currentProject.description = result.projectForm.controls['description'].value;
+          this.currentProject.userList = result.projectForm.controls['users'].value;
+          // this.currentProject.userList = (<FormArray>result.projectForm.get('users')).value;
 
           this.projectService.onUpdateProject(this.currentProject);
         }
@@ -166,6 +167,7 @@ export class ProjectBoardComponent implements OnInit {
 
           let user: User = User.getBlankUser();
           user.id = result.user.value.id;
+          user.name = result.user.value.name;
           userStory.user = user;
 
           // let project: Project = Project.getBlankProject();
@@ -269,7 +271,7 @@ export class ProjectBoardComponent implements OnInit {
 
           let user: User = User.getBlankUser();
           user.id = result.user.value.id;
-          user.name = result.user.name;
+          user.name = result.user.value.name;
           taskToSave.user = user;
 
           taskToSave.userStory = userStory;

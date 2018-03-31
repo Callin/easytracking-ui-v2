@@ -1,36 +1,41 @@
-<mat-form-field class='project-dialog-input'>
-  <input matInput
-         placeholder='Title'
-         [formControl]='data.projectNameFormControl'>
-</mat-form-field>
+<div [formGroup]="data.projectForm">
+  <mat-form-field class='project-dialog-input'>
+    <input matInput
+           placeholder='Title'
+           formControlName='title'>
+    <span *ngIf="!data.projectForm.get('title').valid && data.projectForm.get('title').touched"
+            class="help-block"> Please enter a valid title
+  </span>
+  </mat-form-field>
 
-<div mat-dialog-content class='project-dialog-content'>
-  <mat-form-field class='project-dialog-input-textarea'>
+  <div mat-dialog-content class='project-dialog-content'>
+    <mat-form-field class='project-dialog-input-textarea'>
       <textarea matInput
                 class='project-dialog-input-textarea'
                 placeholder='Description'
-                [formControl]='data.projectDescriptionFormControl'
+                formControlName='description'
                 matTextareaAutosize matAutosizeMinRows="2"
                 matAutosizeMaxRows="5"></textarea>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select multiple placeholder="Users" [formControl]='data.projectUsersFormControl'>
-      <mat-option aria-multiselectable="true"
-                  *ngFor="let user of data.allUsers"
-                  [value]="user">
-        {{user.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-
-<div mat-dialog-actions>
-  <div style="float: left; width: 90%">
-    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
-    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select multiple placeholder="Users" formControlName='users'>
+        <mat-option aria-multiselectable="true"
+                    *ngFor="let user of data.allTheUsers"
+                    [value]="user">
+          {{user.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <!--<div style="float: right; width: 10%">-->
-  <!--<button mat-raised-button color="warn" (click)='deleteProject(data)' *ngIf='!data.isNew'>Delete-->
-  <!--</button>-->
-  <!--</div>-->
+
+  <div mat-dialog-actions>
+    <div style="float: left; width: 90%">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+    <!--<div style="float: right; width: 10%">-->
+    <!--<button mat-raised-button color="warn" (click)='deleteProject(data)' *ngIf='!data.isNew'>Delete-->
+    <!--</button>-->
+    <!--</div>-->
+  </div>
 </div>
