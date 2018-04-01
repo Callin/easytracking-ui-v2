@@ -7,7 +7,7 @@ import {User} from '../dto/user';
 import {BoardFilterContainer} from './board-filter-container';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {MatDialog} from '@angular/material';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../service/user-service';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {UserStory} from '../dto/user-story';
@@ -135,7 +135,7 @@ export class ProjectBoardComponent implements OnInit {
     let estimation = new FormControl(2);
     let user = new FormControl(userStory.user);
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
       BoardItemStatusEnum.IN_REVIEW, BoardItemStatusEnum.DONE];
     const isNew = true;
@@ -192,7 +192,7 @@ export class ProjectBoardComponent implements OnInit {
     let estimation = new FormControl(userStory.estimation);
     let user = new FormControl(userStory.user);
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = this.statusList;
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.USER_STORY;
@@ -240,7 +240,7 @@ export class ProjectBoardComponent implements OnInit {
     let estimation = new FormControl(2);
     let user = new FormControl(task.user);
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
       BoardItemStatusEnum.IN_REVIEW, BoardItemStatusEnum.DONE];
     const isNew = true;
@@ -293,7 +293,7 @@ export class ProjectBoardComponent implements OnInit {
 
     const userStoryId = userStory.id;
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
       BoardItemStatusEnum.IN_REVIEW, BoardItemStatusEnum.DONE];
     const isNew = false;
@@ -347,7 +347,7 @@ export class ProjectBoardComponent implements OnInit {
     let estimation = new FormControl(2);
     let user = new FormControl(bug.user);
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
       BoardItemStatusEnum.IN_REVIEW, BoardItemStatusEnum.DONE];
     const isNew = true;
@@ -401,7 +401,7 @@ export class ProjectBoardComponent implements OnInit {
 
     const userStoryId = userStory.id;
 
-    const allUsers = this.allUsers;
+    const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
       BoardItemStatusEnum.IN_REVIEW, BoardItemStatusEnum.DONE];
     const isNew = false;
@@ -453,4 +453,8 @@ export class ProjectBoardComponent implements OnInit {
     this.bugService.onUpdateBug(item);
   }
 
+  onProjectChange(project: Project) {
+   this.userStoryService.onGetUserStories(project.id);
+   this.currentProject = project;
+  }
 }

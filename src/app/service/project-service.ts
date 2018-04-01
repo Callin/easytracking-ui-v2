@@ -28,7 +28,7 @@ export class ProjectService {
       );
   }
 
-  getProjectById(projectId: number): Observable<Project> { // to be changed to getAllProjectsByUserId
+  getProjectById(projectId: number): Observable<Project> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header})
       .catch((error: Response) => {
