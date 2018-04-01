@@ -9,6 +9,7 @@ export class AppConstants {
   public static TASK_URL = AppConstants.SERVER_URL + '/task';
   public static BUG_URL = AppConstants.SERVER_URL + '/bug';
   public static USER_URL = AppConstants.SERVER_URL + '/user';
+  public static ORGANIZATION_URL = AppConstants.SERVER_URL + '/organization';
 
   public static readonly NEW = 'New';
   public static readonly IN_PROGRESS = 'In Progress';

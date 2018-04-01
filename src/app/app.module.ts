@@ -54,10 +54,12 @@ import {TaskService} from './service/task-service';
 import {BugService} from './service/bug-service';
 import {UserStoryService} from './service/user-story-service';
 import {SprintService} from './service/sprint-service';
+import { OrganizationBoardComponent } from './organization-board/organization-board.component';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SiginComponent},
+  {path: 'organization', component: OrganizationBoardComponent},
   {path: 'project/:id', component: ProjectBoardComponent},
   {path: '', component: UserDashboardComponent}
 ];
@@ -70,7 +72,8 @@ const appRoutes: Routes = [
     UserDashboardComponent,
     ProjectDialogComponent,
     ProjectBoardComponent,
-    BoardItemDialogComponent
+    BoardItemDialogComponent,
+    OrganizationBoardComponent
   ],
   imports: [
     BrowserModule,
@@ -129,7 +132,12 @@ const appRoutes: Routes = [
     MatTooltipModule,
     RouterModule
   ],
-  entryComponents: [SignupComponent, SiginComponent, ProjectDialogComponent, BoardItemDialogComponent],
+  entryComponents: [
+    SignupComponent,
+    SiginComponent,
+    ProjectDialogComponent,
+    BoardItemDialogComponent,
+    OrganizationBoardComponent],
   providers: [
     ProjectService,
     UserService,
