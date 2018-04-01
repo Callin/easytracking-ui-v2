@@ -126,14 +126,15 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openNewUserStoryDialog() {
-    let userStory: UserStory = UserStory.getBlankUserStory();
-
-    let name = new FormControl(userStory.name);
-    let description = new FormControl(userStory.description);
-    let status = new FormControl(BoardItemStatusEnum.NEW);
-    let priority = new FormControl(2);
-    let estimation = new FormControl(2);
-    let user = new FormControl(userStory.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(null),
+      'name': new FormControl("", Validators.required),
+      'description': new FormControl(""),
+      'status': new FormControl(BoardItemStatusEnum.NEW),
+      'priority': new FormControl(2),
+      'estimation': new FormControl(2),
+      'user': new FormControl(null, Validators.required)
+    });
 
     const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
@@ -146,7 +147,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -158,20 +159,13 @@ export class ProjectBoardComponent implements OnInit {
       .subscribe(result => {
         if (result != null) {
           let userStory: UserStory = UserStory.getBlankUserStory();
-          userStory.name = result.name.value;
-          userStory.description = result.description.value;
-          userStory.status = result.status.value;
+          userStory.name = result.boardItemForm.controls['name'].value;
+          userStory.description = result.boardItemForm.controls['description'].value;
+          userStory.status = result.boardItemForm.controls['status'].value;
+          userStory.priority = result.boardItemForm.controls['priority'].value;
+          userStory.estimation = result.boardItemForm.controls['estimation'].value;
 
-          userStory.priority = result.priority.value;
-          userStory.estimation = result.estimation.value;
-
-          let user: User = User.getBlankUser();
-          user.id = result.user.value.id;
-          user.name = result.user.value.name;
-          userStory.user = user;
-
-          // let project: Project = Project.getBlankProject();
-          // project.id = this.currentProject.id;
+          userStory.user = result.boardItemForm.controls['user'].value;
 
           userStory.project = this.currentProject;
 
@@ -184,13 +178,15 @@ export class ProjectBoardComponent implements OnInit {
 
   openExistingUserStoryDialog(userStory: UserStory) {
 
-    let id = new FormControl(userStory.id);
-    let name = new FormControl(userStory.name);
-    let description = new FormControl(userStory.description);
-    let status = new FormControl(userStory.status);
-    let priority = new FormControl(userStory.priority);
-    let estimation = new FormControl(userStory.estimation);
-    let user = new FormControl(userStory.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(userStory.id),
+      'name': new FormControl(userStory.name, Validators.required),
+      'description': new FormControl(userStory.description),
+      'status': new FormControl(userStory.status),
+      'priority': new FormControl(userStory.priority),
+      'estimation': new FormControl(userStory.estimation),
+      'user': new FormControl(userStory.user)
+    });
 
     const allUsers = this.currentProject.userList;
     const statusList: string[] = this.statusList;
@@ -202,7 +198,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        id, name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -213,17 +209,14 @@ export class ProjectBoardComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result != null) {
-          userStory.id = result.id.value;
-          userStory.name = result.name.value;
-          userStory.description = result.description.value;
-          userStory.status = result.status.value;
-          userStory.priority = result.priority.value;
-          userStory.estimation = result.estimation.value;
+          userStory.id = result.boardItemForm.controls['id'].value;
+          userStory.name = result.boardItemForm.controls['name'].value;
+          userStory.description = result.boardItemForm.controls['description'].value;
+          userStory.status = result.boardItemForm.controls['status'].value;
+          userStory.priority = result.boardItemForm.controls['priority'].value;
+          userStory.estimation = result.boardItemForm.controls['estimation'].value;
 
-          let user: User = User.getBlankUser();
-          user.id = result.user.value.id;
-          user.name = result.user.value.name;
-          userStory.user = user;
+          userStory.user = result.boardItemForm.controls['user'].value;
 
           this.userStoryService.onUpdateUserStory(userStory);
         }
@@ -231,14 +224,15 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openNewTaskDialog(userStory: UserStory) {
-    let task: Task = Task.getBlankTask();
-
-    let name = new FormControl(task.name);
-    let description = new FormControl(task.description);
-    let status = new FormControl(BoardItemStatusEnum.NEW);
-    let priority = new FormControl(2);
-    let estimation = new FormControl(2);
-    let user = new FormControl(task.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(null),
+      'name': new FormControl("", Validators.required),
+      'description': new FormControl(""),
+      'status': new FormControl(BoardItemStatusEnum.NEW),
+      'priority': new FormControl(2),
+      'estimation': new FormControl(2),
+      'user': new FormControl(null, Validators.required)
+    });
 
     const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
@@ -251,7 +245,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -263,16 +257,13 @@ export class ProjectBoardComponent implements OnInit {
       .subscribe(result => {
         if (result != null) {
           let taskToSave: Task = Task.getBlankTask();
-          taskToSave.name = result.name.value;
-          taskToSave.description = result.description.value;
-          taskToSave.status = result.status.value;
-          taskToSave.priority = result.priority.value;
-          taskToSave.estimation = result.estimation.value;
+          taskToSave.name = result.boardItemForm.controls['name'].value;
+          taskToSave.description = result.boardItemForm.controls['description'].value;
+          taskToSave.status = result.boardItemForm.controls['status'].value;
+          taskToSave.priority = result.boardItemForm.controls['priority'].value;
+          taskToSave.estimation = result.boardItemForm.controls['estimation'].value;
 
-          let user: User = User.getBlankUser();
-          user.id = result.user.value.id;
-          user.name = result.user.value.name;
-          taskToSave.user = user;
+          taskToSave.user = result.boardItemForm.controls['user'].value;
 
           taskToSave.userStory = userStory;
 
@@ -283,13 +274,15 @@ export class ProjectBoardComponent implements OnInit {
 
   openExistingTaskDialog(userStory: UserStory, task: Task) {
 
-    let id = new FormControl(task.id);console.log("Id: " + id.value);
-    let name = new FormControl(task.name);
-    let description = new FormControl(task.description);
-    let status = new FormControl(task.status);
-    let priority = new FormControl(task.priority);
-    let estimation = new FormControl(task.estimation);
-    let user = new FormControl(task.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(task.id),
+      'name': new FormControl(task.name, Validators.required),
+      'description': new FormControl(task.description),
+      'status': new FormControl(task.status),
+      'priority': new FormControl(task.priority),
+      'estimation': new FormControl(task.estimation),
+      'user': new FormControl(task.user)
+    });
 
     const userStoryId = userStory.id;
 
@@ -304,7 +297,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        id, name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -316,17 +309,14 @@ export class ProjectBoardComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result != null) {
-          task.id = result.id.value;
-          task.name = result.name.value;
-          task.description = result.description.value;
-          task.status = result.status.value;
-          task.priority = result.priority.value;
-          task.estimation = result.estimation.value;
+          task.id = result.boardItemForm.controls['id'].value;
+          task.name = result.boardItemForm.controls['name'].value;
+          task.description = result.boardItemForm.controls['description'].value;
+          task.status = result.boardItemForm.controls['status'].value;
+          task.priority = result.boardItemForm.controls['priority'].value;
+          task.estimation = result.boardItemForm.controls['estimation'].value;
 
-          let user: User = User.getBlankUser();
-          user.id = result.user.value.id;
-          user.name = result.user.value.name;
-          task.user = user;
+          task.user = result.boardItemForm.controls['user'].value;
 
           let parentUserStory: UserStory = UserStory.getBlankUserStory();
           parentUserStory.id = userStory.id;
@@ -338,14 +328,15 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openNewBugDialog(userStory: UserStory) {
-    let bug: Bug = Bug.getBlankBug();
-
-    let name = new FormControl(bug.name);
-    let description = new FormControl(bug.description);
-    let status = new FormControl(BoardItemStatusEnum.NEW);
-    let priority = new FormControl(2);
-    let estimation = new FormControl(2);
-    let user = new FormControl(bug.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(null),
+      'name': new FormControl("", Validators.required),
+      'description': new FormControl(""),
+      'status': new FormControl(BoardItemStatusEnum.NEW),
+      'priority': new FormControl(2),
+      'estimation': new FormControl(2),
+      'user': new FormControl(null, Validators.required)
+    });
 
     const allUsers = this.currentProject.userList;
     const statusList: string[] = [BoardItemStatusEnum.NEW, BoardItemStatusEnum.IN_PROGRSESS,
@@ -358,7 +349,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -370,20 +361,16 @@ export class ProjectBoardComponent implements OnInit {
       .subscribe(result => {
         if (result != null) {
           let bugToSave: Bug = Bug.getBlankBug();
-          bugToSave.name = result.name.value;
-          bugToSave.description = result.description.value;
-          bugToSave.status = result.status.value;
-          bugToSave.priority = result.priority.value;
-          bugToSave.estimation = result.estimation.value;
+          bugToSave.name = result.boardItemForm.controls['name'].value;
+          bugToSave.description = result.boardItemForm.controls['description'].value;
+          bugToSave.status = result.boardItemForm.controls['status'].value;
+          bugToSave.priority = result.boardItemForm.controls['priority'].value;
+          bugToSave.estimation = result.boardItemForm.controls['estimation'].value;
 
-          let user: User = User.getBlankUser();
-          user.id = result.user.value.id;
-          user.name = result.user.value.name;
-          bugToSave.user = user;
+          bugToSave.user = result.boardItemForm.controls['user'].value;
 
           bugToSave.userStory = userStory;
 
-          console.log("On create user story: ");
           this.bugService.onCreateBug(bugToSave, userStory);
         }
       });
@@ -391,13 +378,15 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openExistingBugDialog(bug: Bug, userStory: UserStory) {
-    let id = new FormControl(bug.id);
-    let name = new FormControl(bug.name);
-    let description = new FormControl(bug.description);
-    let status = new FormControl(bug.status);
-    let priority = new FormControl(bug.priority);
-    let estimation = new FormControl(bug.estimation);
-    let user = new FormControl(bug.user);
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(bug.id),
+      'name': new FormControl(bug.name, Validators.required),
+      'description': new FormControl(bug.description),
+      'status': new FormControl(bug.status),
+      'priority': new FormControl(bug.priority),
+      'estimation': new FormControl(bug.estimation),
+      'user': new FormControl(bug.user)
+    });
 
     const userStoryId = userStory.id;
 
@@ -412,7 +401,7 @@ export class ProjectBoardComponent implements OnInit {
       height: '50%',
       minHeight: 400, // assumes px
       data: {
-        id, name, description, status, priority, estimation, user,
+        boardItemForm,
         allUsers,
         statusList,
         isNew,
@@ -424,14 +413,14 @@ export class ProjectBoardComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result != null) {
-          bug.name = result.name.value;
-          bug.description = result.description.value;
-          bug.status = result.status.value;
-          bug.priority = result.priority.value;
-          bug.estimation = result.estimation.value;
+          bug.id = result.boardItemForm.controls['id'].value;
+          bug.name = result.boardItemForm.controls['name'].value;
+          bug.description = result.boardItemForm.controls['description'].value;
+          bug.status = result.boardItemForm.controls['status'].value;
+          bug.priority = result.boardItemForm.controls['priority'].value;
+          bug.estimation = result.boardItemForm.controls['estimation'].value;
 
-          bug.user.id = result.user.value.id;
-          bug.user.name = result.user.value.name;
+          bug.user = result.boardItemForm.controls['user'].value;
 
           bug.userStory = userStory;
 
@@ -454,7 +443,7 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   onProjectChange(project: Project) {
-   this.userStoryService.onGetUserStories(project.id);
-   this.currentProject = project;
+    this.userStoryService.onGetUserStories(project.id);
+    this.currentProject = project;
   }
 }

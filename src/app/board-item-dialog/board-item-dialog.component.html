@@ -1,7 +1,8 @@
+<div [formGroup]="data.boardItemForm">
   <mat-form-field class='board-item-dialog-input'>
     <input matInput
            placeholder="{{data.boardItemType}} Title"
-           [formControl]='data.name'>
+           formControlName='name'>
   </mat-form-field>
 
   <div mat-dialog-content class='board-item-dialog-content'>
@@ -9,14 +10,14 @@
       <textarea matInput
                 class='board-item-textarea-description'
                 placeholder='Description'
-                [formControl]='data.description' >
+                formControlName='description' >
       </textarea>
     </mat-form-field>
 
     <mat-grid-list cols='2' rowHeight='11:1'>
       <mat-grid-tile>
         <mat-form-field class="text-input-half-width">
-          <mat-select placeholder='Owner ' [formControl]='data.user'>
+          <mat-select placeholder='Owner ' formControlName='user'>
             <mat-option *ngFor='let user of data.allUsers'
                         [value]='user'>
               {{user.name}}
@@ -28,14 +29,14 @@
         <mat-form-field class="text-input-half-width">
           <input matInput
                  placeholder='Priority'
-                 [formControl]='data.priority'>
+                 formControlName='priority'>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field class="text-input-half-width">
           <mat-select placeholder='Status'
-                      [formControl]='data.status'>
+                      formControlName='status'>
             <mat-option *ngFor='let status of data.statusList'
                         value={{status}}>
               {{status}}
@@ -48,7 +49,7 @@
         <mat-form-field class="text-input-half-width">
           <input matInput
                  placeholder='Estimation'
-                 [formControl]='data.estimation'>
+                 formControlName='estimation'>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
@@ -64,3 +65,4 @@
       </button>
     </div>
   </div>
+</div>

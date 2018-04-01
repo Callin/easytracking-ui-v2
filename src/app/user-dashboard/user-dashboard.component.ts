@@ -4,7 +4,7 @@ import {ProjectDialogComponent} from '../project-dialog/project-dialog.component
 import {User} from '../dto/user';
 import {MatDialog} from '@angular/material';
 import {ProjectService} from '../service/project-service';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validator, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from "../service/user-service";
 
 @Component({
@@ -57,7 +57,7 @@ export class UserDashboardComponent implements OnInit {
       'title': new FormControl(null, Validators.required),
       'description': new FormControl(null),
       'users': new FormControl()
-  });
+    });
 
     const isNew = true;
     const allTheUsers: User[] = this.getExistingUsers();
@@ -68,7 +68,8 @@ export class UserDashboardComponent implements OnInit {
       data: {
         projectForm,
         isNew,
-        allTheUsers}
+        allTheUsers
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

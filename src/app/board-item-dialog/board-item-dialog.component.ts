@@ -29,11 +29,11 @@ export class BoardItemDialogComponent implements OnInit {
 
   deleteBoardItem(data: any) {
     if (data.boardItemType === BoardItemTypeEnum.USER_STORY) {
-      this.userStoryService.onDeleteUserStory(data.id.value);
+      this.userStoryService.onDeleteUserStory(data.boardItemForm.controls['id'].value);
     } else if (data.boardItemType === BoardItemTypeEnum.TASK) {
-      this.taskService.onDeleteTask(data.id.value, data.userStoryId);
+      this.taskService.onDeleteTask(data.boardItemForm.controls['id'].value, data.userStoryId);
     } else if (data.boardItemType === BoardItemTypeEnum.BUG) {
-      this.bugService.onDeleteBug(data.id.value, data.userStoryId);
+      this.bugService.onDeleteBug(data.boardItemForm.controls['id'].value, data.userStoryId);
     }
 
     this.dialogRef.close();
