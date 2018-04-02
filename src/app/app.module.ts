@@ -56,6 +56,7 @@ import {UserStoryService} from './service/user-story-service';
 import {SprintService} from './service/sprint-service';
 import { OrganizationBoardComponent } from './organization-board/organization-board.component';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { RemoveItemDialogComponent } from './remove-item-dialog/remove-item-dialog.component';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -75,7 +76,8 @@ const appRoutes: Routes = [
     ProjectBoardComponent,
     BoardItemDialogComponent,
     OrganizationBoardComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    RemoveItemDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -140,6 +142,7 @@ const appRoutes: Routes = [
     SiginComponent,
     ProjectDialogComponent,
     UserDialogComponent,
+    RemoveItemDialogComponent,
     BoardItemDialogComponent,
     OrganizationBoardComponent],
   providers: [

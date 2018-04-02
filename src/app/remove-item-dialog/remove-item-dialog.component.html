@@ -1,0 +1,16 @@
+<div>
+  <div mat-dialog-title="" >
+    Delete {{data.type}}
+  </div>
+
+  <div mat-dialog-content class='project-dialog-content'>
+    Are you sure you want to remove <strong>{{data.name}}</strong> ?
+  </div>
+
+  <div mat-dialog-actions>
+    <div style="float: left; width: 90%">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="warn" [mat-dialog-close]='data'>Delete</button>
+    </div>
+  </div>
+</div>

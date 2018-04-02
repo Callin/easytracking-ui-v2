@@ -100,13 +100,15 @@ export class ProjectService {
     this.changeCurrentProject.emit(this.currentProject);
   }
 
-  onDeleteProject(project: Project) {
-    this.deleteProject(project.id).subscribe(
+  onDeleteProject(projectId: number) {
+    this.deleteProject(projectId).subscribe(
       (response) => {
         if (response == null) {
-          console.log('Project was removed.');
-          this.allProjects.splice(this.allProjects.indexOf(project), 1);
+          const indexOfProject = this.allProjects.findIndex(project => project.id === projectId);
+          this.allProjects.splice(indexOfProject, 1);
           this.changeProjectList.emit(this.allProjects);
+
+          console.log('Project was removed.');
         }
       },
       (error) => console.log(error)

@@ -73,4 +73,24 @@ export class UserService {
       });
   }
 
+  onDeleteUser(userId: number) {
+    this.deleteUser(userId)
+      .subscribe((response) => {
+          if (response == null) {
+            const indexOfUser = this.allUsers.findIndex(user => user.id === userId);
+            this.allUsers.splice(indexOfUser, 1);
+            this.changeUserList.emit(this.allUsers);
+            console.log('User was removed.');
+          }
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  deleteUser(userId: number) {
+    return this.httpClient.delete(AppConstants.USER_URL + '/' + userId)
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+  }
 }

@@ -32,7 +32,11 @@
           <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
         </div>
         <div class="col">
-          <mat-icon class="account-icon" color="link" matTooltip="Delete project" (click)="openNewUserDialog()">delete_forever
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveItemDialog(project.id, project.title, REMOVE_PROJECT)">
+            delete_forever
           </mat-icon>
         </div>
         <mat-divider class="mat-divider-on-board"></mat-divider>
@@ -70,7 +74,11 @@
           {{user.email}}
         </div>
         <div class="col">
-          <mat-icon class="account-icon" color="link" matTooltip="Delete user" (click)="openNewUserDialog()">delete_forever
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveItemDialog(user.id, user.name, REMOVE_USER)">
+            delete_forever
           </mat-icon>
         </div>
         <mat-divider class="mat-divider-on-board"></mat-divider>

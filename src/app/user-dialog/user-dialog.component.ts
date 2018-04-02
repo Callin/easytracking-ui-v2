@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ProjectDialogComponent} from "../project-dialog/project-dialog.component";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-user-dialog',
@@ -9,7 +9,7 @@ import {ProjectDialogComponent} from "../project-dialog/project-dialog.component
 })
 export class UserDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<UserDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {

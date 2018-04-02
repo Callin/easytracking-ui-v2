@@ -7,6 +7,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../dto/user";
 import {ProjectDialogComponent} from "../project-dialog/project-dialog.component";
 import {UserDialogComponent} from "../user-dialog/user-dialog.component";
+import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
 
 @Component({
   selector: 'app-organization-board',
@@ -18,18 +19,21 @@ export class OrganizationBoardComponent implements OnInit {
   projectList: Project[] = [];
   userList: User[] = [];
 
+  REMOVE_PROJECT: string = "project";
+  REMOVE_USER: string = "user";
+
   constructor(public dialog: MatDialog,
-              private projectBoardService: ProjectService,
+              private projectService: ProjectService,
               private userService: UserService,
               private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.projectBoardService.changeProjectList.subscribe(projectList => {
+    this.projectService.changeProjectList.subscribe(projectList => {
       this.projectList = projectList;
     });
 
-    this.projectBoardService.onGetAllProjects('true');
+    this.projectService.onGetAllProjects('true');
 
     this.userService.changeUserList.subscribe(userList => {
       this.userList = userList;
@@ -68,7 +72,7 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectForm.controls['users'].value;
 
-        this.projectBoardService.onCreateProject(project);
+        this.projectService.onCreateProject(project);
       }
     });
   }
@@ -100,6 +104,31 @@ export class OrganizationBoardComponent implements OnInit {
         user.email = result.userForm.controls['email'].value;
 
         this.userService.onCreateUser(user);
+      }
+    });
+  }
+
+  openRemoveItemDialog(id: number, name: string, type: string) {
+    // show predefined data
+
+    const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        if (type === this.REMOVE_PROJECT) {
+          this.projectService.onDeleteProject(id);
+        } else if (type === this.REMOVE_USER) {
+          this.userService.onDeleteUser(id);
+        }
       }
     });
   }
