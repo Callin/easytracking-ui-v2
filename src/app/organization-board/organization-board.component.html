@@ -13,6 +13,7 @@
         <div class="col">Title</div>
         <div class="col">Users</div>
         <div class="col">Board</div>
+        <div class="col">Remove project</div>
       </div>
 
       <mat-divider class="mat-divider-on-board"></mat-divider>
@@ -29,6 +30,10 @@
         </div>
         <div class="col">
           <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon" color="link" matTooltip="Delete project" (click)="openNewUserDialog()">delete_forever
+          </mat-icon>
         </div>
         <mat-divider class="mat-divider-on-board"></mat-divider>
       </div>
@@ -49,6 +54,7 @@
         <div class="col-1">User id</div>
         <div class="col">Name</div>
         <div class="col">Email</div>
+        <div class="col">Remove user</div>
       </div>
 
       <mat-divider class="mat-divider-on-board"></mat-divider>
@@ -63,12 +69,15 @@
         <div class="col">
           {{user.email}}
         </div>
+        <div class="col">
+          <mat-icon class="account-icon" color="link" matTooltip="Delete user" (click)="openNewUserDialog()">delete_forever
+          </mat-icon>
+        </div>
         <mat-divider class="mat-divider-on-board"></mat-divider>
       </div>
     </div>
     <br/>
-    <button mat-raised-button color="primary" (click)="openNewUserDialog()" matTooltip="Add new user">Add new user
-  </button>
+    <button mat-raised-button color="primary" (click)="openNewUserDialog()" matTooltip="Add new user">Add new user</button>
   </mat-tab>
 </mat-tab-group>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Project} from "../dto/project";
 import {MatDialog} from "@angular/material";
 import {UserService} from "../service/user-service";
@@ -6,6 +6,7 @@ import {ProjectService} from "../service/project-service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../dto/user";
 import {ProjectDialogComponent} from "../project-dialog/project-dialog.component";
+import {UserDialogComponent} from "../user-dialog/user-dialog.component";
 
 @Component({
   selector: 'app-organization-board',
@@ -20,7 +21,8 @@ export class OrganizationBoardComponent implements OnInit {
   constructor(public dialog: MatDialog,
               private projectBoardService: ProjectService,
               private userService: UserService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.projectBoardService.changeProjectList.subscribe(projectList => {
@@ -71,5 +73,34 @@ export class OrganizationBoardComponent implements OnInit {
     });
   }
 
-  openNewUserDialog(){}
+  openNewUserDialog() {
+    // show predefined data
+
+    let userForm: FormGroup = this.formBuilder.group({
+      'name': new FormControl(null, Validators.required),
+      'email': new FormControl(null, Validators.email)
+    });
+
+    const isNew = true;
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '60%',
+      height: '40%',
+      minHeight: 350, // assumes px
+      data: {
+        userForm,
+        isNew
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        let user: User = User.getBlankUser();
+        user.name = result.userForm.controls['name'].value;
+        user.email = result.userForm.controls['email'].value;
+
+        this.userService.onCreateUser(user);
+      }
+    });
+  }
 }

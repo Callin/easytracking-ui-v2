@@ -55,6 +55,7 @@ import {BugService} from './service/bug-service';
 import {UserStoryService} from './service/user-story-service';
 import {SprintService} from './service/sprint-service';
 import { OrganizationBoardComponent } from './organization-board/organization-board.component';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
     ProjectDialogComponent,
     ProjectBoardComponent,
     BoardItemDialogComponent,
-    OrganizationBoardComponent
+    OrganizationBoardComponent,
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -137,6 +139,7 @@ const appRoutes: Routes = [
     SignupComponent,
     SiginComponent,
     ProjectDialogComponent,
+    UserDialogComponent,
     BoardItemDialogComponent,
     OrganizationBoardComponent],
   providers: [
