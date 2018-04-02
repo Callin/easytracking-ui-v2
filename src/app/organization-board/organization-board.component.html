@@ -1,3 +1,80 @@
-<p>
-  organization-board works!
-</p>
+<div>
+  <h3>Organization name</h3>
+</div>
+<mat-tab-group>
+  <mat-tab label="Projects">
+    <!--<mat-divider class="mat-divider-on-board"></mat-divider>-->
+    <br/>
+    <p>There are {{projectList.length}} projects.</p>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-1">Project id</div>
+        <div class="col">Title</div>
+        <div class="col">Users</div>
+        <div class="col">Board</div>
+      </div>
+
+      <mat-divider class="mat-divider-on-board"></mat-divider>
+
+      <div class="row" *ngFor="let project of projectList">
+        <div class="col-1">
+          {{project.id}}
+        </div>
+        <div class="col">
+          {{project.title}}
+        </div>
+        <div class="col">
+          Edit users
+        </div>
+        <div class="col">
+          <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
+        </div>
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+      </div>
+
+    </div>
+    <br/>
+    <button mat-raised-button color="primary" (click)="openNewProjectDialog()" matTooltip="Add new project">Add new
+      project
+    </button>
+  </mat-tab>
+  <mat-tab label="Users">
+
+    <br/>
+    <p>There are {{userList.length}} users.</p>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-1">User id</div>
+        <div class="col">Name</div>
+        <div class="col">Email</div>
+      </div>
+
+      <mat-divider class="mat-divider-on-board"></mat-divider>
+
+      <div class="row" *ngFor="let user of userList">
+        <div class="col-1">
+          {{user.id}}
+        </div>
+        <div class="col">
+          {{user.name}}
+        </div>
+        <div class="col">
+          {{user.email}}
+        </div>
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+      </div>
+    </div>
+    <br/>
+    <button mat-raised-button color="primary" (click)="openNewUserDialog()" matTooltip="Add new user">Add new user
+  </button>
+  </mat-tab>
+</mat-tab-group>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+

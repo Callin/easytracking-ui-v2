@@ -91,6 +91,7 @@ const appRoutes: Routes = [
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
