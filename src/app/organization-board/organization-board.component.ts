@@ -77,6 +77,37 @@ export class OrganizationBoardComponent implements OnInit {
     });
   }
 
+  openEditProjectDialog(project: Project) {
+    // show predefined data
+    let projectForm: FormGroup = this.formBuilder.group({
+      'title': new FormControl(project.title, Validators.required),
+      'description': new FormControl(project.description, null),
+      'users': new FormControl(project.userList)
+    });
+
+    const allTheUsers: User[] = this.userList;
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      width: '60%',
+      height: '40%',
+      minHeight: 350, // assumes px
+      data: {
+        projectForm,
+        allTheUsers
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        project.title = result.projectForm.controls['title'].value;
+        project.description = result.projectForm.controls['description'].value;
+        project.userList = result.projectForm.controls['users'].value;
+
+        this.projectService.onUpdateProject(project);
+      }
+    });
+  }
+
   openNewUserDialog() {
     // show predefined data
 
@@ -104,6 +135,35 @@ export class OrganizationBoardComponent implements OnInit {
         user.email = result.userForm.controls['email'].value;
 
         this.userService.onCreateUser(user);
+      }
+    });
+  }
+
+  openEditUserDialog(user: User) {
+    // show predefined data
+
+    let userForm: FormGroup = this.formBuilder.group({
+      'name': new FormControl(user.name, Validators.required),
+      'email': new FormControl(user.email, Validators.email)
+    });
+
+    const isNew = true;
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '60%',
+      height: '40%',
+      minHeight: 350, // assumes px
+      data: {
+        userForm
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        user.name = result.userForm.controls['name'].value;
+        user.email = result.userForm.controls['email'].value;
+
+        this.userService.onUpdateUser(user);
       }
     });
   }
