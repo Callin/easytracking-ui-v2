@@ -1,0 +1,23 @@
+<div class="users-main-container">
+  <div class="users-dialog-title">
+    <h5>Edit project users</h5>
+  </div>
+
+  <form class='users-dialog-content' [formGroup]="data.userFormControlGroup">
+    <div formArrayName="userFormArray">
+      <div *ngFor="let user of data.users; let i = index">
+        <mat-checkbox
+          class='project-dialog-input'
+          [formControlName]="i">
+          {{user.name}}
+        </mat-checkbox>
+      </div>
+    </div>
+
+
+    <div class="users-dialog-footer">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+  </form>
+</div>

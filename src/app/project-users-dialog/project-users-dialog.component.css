@@ -1,0 +1,21 @@
+.users-main-container {
+  /*border: 3px solid red;*/
+}
+
+.users-dialog-title {
+  margin: auto;
+  width: 80%;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+.users-dialog-content {
+  padding: 10px;
+}
+
+.users-dialog-footer {
+  margin: auto;
+  width: 80%;
+  border-top: 1px solid black;
+  padding: 10px;
+}

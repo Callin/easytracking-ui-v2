@@ -3,11 +3,12 @@ import {Project} from "../dto/project";
 import {MatDialog} from "@angular/material";
 import {UserService} from "../service/user-service";
 import {ProjectService} from "../service/project-service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../dto/user";
 import {ProjectDialogComponent} from "../project-dialog/project-dialog.component";
 import {UserDialogComponent} from "../user-dialog/user-dialog.component";
 import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
+import {ProjectUsersDialogComponent} from "../project-users-dialog/project-users-dialog.component";
 
 @Component({
   selector: 'app-organization-board',
@@ -33,7 +34,7 @@ export class OrganizationBoardComponent implements OnInit {
       this.projectList = projectList;
     });
 
-    this.projectService.onGetAllProjects('true');
+    this.projectService.onGetAllProjects('false');
 
     this.userService.changeUserList.subscribe(userList => {
       this.userList = userList;
@@ -191,5 +192,45 @@ export class OrganizationBoardComponent implements OnInit {
         }
       }
     });
+  }
+
+  openEditProjectUsersDialog(project: Project) {
+    // show predefined data
+    const users = this.userList;
+    let userFormControlGroup: FormGroup = this.formBuilder.group({
+      'userFormArray': new FormArray([])
+    });
+    const userFormArray = userFormControlGroup.get('userFormArray') as FormArray;
+    users.forEach(user => userFormArray.push(new FormControl(this.isPartOfTheProject(user, project))));
+
+    const dialogRef = this.dialog.open(ProjectUsersDialogComponent, {
+      width: '25%',
+      height: '70%',
+      data: {
+        userFormControlGroup,
+        users,
+        project
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        const resultUSerList = users.filter((user, i) => userFormControlGroup.value.userFormArray[i] === true);
+
+        console.log("resultUSerList" + resultUSerList.length);
+        project.userList = resultUSerList;
+        this.projectService.onUpdateProject(project);
+      }
+    });
+  }
+
+  isPartOfTheProject(user: User, project: Project): boolean {
+    if (project !== null && project.userList !== null) {
+      const userIndex = project.userList.findIndex(projectUser => projectUser.id === user.id);
+      return userIndex !== -1;
+    }
+
+    return false;
   }
 }
