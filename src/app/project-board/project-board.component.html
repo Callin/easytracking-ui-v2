@@ -80,6 +80,16 @@
   </div>
   <mat-divider class="menu-divider"></mat-divider>
 
+  <div class="row" *ngIf="userStories === null || userStories.length === 0">
+    <div class="col">
+      <br/>
+      <br/>
+      <button mat-raised-button color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">Add new
+        user story
+      </button>
+    </div>
+  </div>
+
   <div class="row" *ngFor="let userStory of userStories">
     <div class="col-sm-3">
       <!--- -------------- userStory if status = New --------------  -->
@@ -88,7 +98,7 @@
           <mat-card-title>{{(userStory.name.length>25)? (userStory.name | slice:0:25)+'...':(userStory.name)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: {{userStory.user.name}}</div>
+          <div class="owner">Owner: {{getUserName(userStory.user)}}</div>
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
               <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -114,7 +124,7 @@
             <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{task.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -135,7 +145,7 @@
             <mat-card-title>{{(bug.name.length>25)? (bug.name | slice:0:25)+'...':(bug.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{bug.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -159,7 +169,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: {{userStory.user.name}}</div>
+          <div class="owner">Owner: {{getUserName(userStory.user)}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -187,7 +197,7 @@
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{task.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -208,7 +218,7 @@
             <mat-card-title>{{(bug.name.length>25)? (bug.name | slice:0:25)+'...':(bug.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{bug.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -232,7 +242,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: {{userStory.user.name}}</div>
+          <div class="owner">Owner: {{getUserName(userStory.user)}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -260,7 +270,7 @@
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{task.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -281,7 +291,7 @@
             <mat-card-title>{{(bug.name.length>25)? (bug.name | slice:0:25)+'...':(bug.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{bug.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -306,7 +316,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="owner">Owner: {{userStory.user.name}}</div>
+          <div class="owner">Owner: {{getUserName(userStory.user)}}</div>
 
           <mat-form-field>
             <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -334,7 +344,7 @@
           <mat-card-title>{{(task.name.length>25)? (task.name | slice:0:25)+'...':(task.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{task.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
               <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
@@ -355,7 +365,7 @@
             <mat-card-title>{{(bug.name.length>25)? (bug.name | slice:0:25)+'...':(bug.name)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{bug.user.name}}</div>
+            <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>

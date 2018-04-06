@@ -422,9 +422,11 @@ export class ProjectBoardComponent implements OnInit {
 
           bug.user = result.boardItemForm.controls['user'].value;
 
-          bug.userStory = userStory;
+          let parentUserStory: UserStory = UserStory.getBlankUserStory();
+          parentUserStory.id = userStory.id;
+          bug.userStory = parentUserStory;
 
-          this.bugService.updateBug(bug);
+          this.bugService.onUpdateBug(bug);
         }
       });
 
@@ -445,5 +447,9 @@ export class ProjectBoardComponent implements OnInit {
   onProjectChange(project: Project) {
     this.userStoryService.onGetUserStories(project.id);
     this.currentProject = project;
+  }
+
+  getUserName(user: User): string {
+    return (user === null || user === undefined) ? "none" : user.name;
   }
 }
