@@ -42,15 +42,17 @@
   margin: auto auto 10px;
 }
 
-.account-icon {
-  font-size: 30px;
-  margin-right: 15px;
-}
-
 .add-task-bug{
   float: right;
+  cursor: pointer;
 }
 
 .task-color {
   color: #ffd740;
+}
+
+.account-icon {
+  font-size: 25px;
+  margin-right: 15px;
+  cursor: pointer;
 }

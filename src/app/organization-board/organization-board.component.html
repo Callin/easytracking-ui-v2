@@ -1,3 +1,17 @@
+<div class="row">
+  <div class="col">
+    <a routerLink="/" routerLinkActive="active">
+      <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg"
+           alt="Easytracking logo">
+    </a>
+  </div>
+  <div class="col-md-2">
+    <mat-icon class="account-icon" color="link" matTooltip="Go to your organization" routerLink="/organization">account_balance
+    </mat-icon>
+    <mat-icon class="account-icon" color="link" matTooltip="Edit user">account_box</mat-icon>
+  </div>
+</div>
+
 <div>
   <h3>Organization name</h3>
 </div>
@@ -27,7 +41,7 @@
           {{project.title}}
         </div>
         <div class="col" (click)="openEditProjectUsersDialog(project)">
-          Edit users
+          <span class="edit-users">Edit users</span>
         </div>
         <div class="col">
           <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
