@@ -14,11 +14,15 @@
 }
 
 .board-item-textarea-description {
-  min-width: 500px;
   min-height: 100px;
 }
 
 .text-input-half-width {
   width: 40%;
   height: 100%;
+}
+
+.board-item-dialog-footer {
+  padding-top: 10px;
+  width: 95%;
 }

@@ -143,9 +143,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.USER_STORY;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,
@@ -194,9 +193,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.USER_STORY;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,
@@ -241,9 +239,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.TASK;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,
@@ -293,9 +290,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.TASK;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,
@@ -345,9 +341,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.BUG;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,
@@ -397,9 +392,8 @@ export class ProjectBoardComponent implements OnInit {
     const boardItemType = BoardItemTypeEnum.BUG;
 
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-      width: '60%',
-      height: '50%',
-      minHeight: 400, // assumes px
+      minWidth: '60%',
+      minHeight: '50%',
       data: {
         boardItemForm,
         allUsers,

@@ -5,57 +5,55 @@
            formControlName='name'>
   </mat-form-field>
 
-  <div mat-dialog-content class='board-item-dialog-content'>
-    <mat-form-field class='board-item-dialog-input-textarea'>
+  <mat-form-field class='board-item-dialog-input-textarea'>
       <textarea matInput
                 class='board-item-textarea-description'
                 placeholder='Description'
-                formControlName='description' >
+                formControlName='description'>
       </textarea>
-    </mat-form-field>
+  </mat-form-field>
 
-    <mat-grid-list cols='2' rowHeight='11:1'>
-      <mat-grid-tile>
-        <mat-form-field class="text-input-half-width">
-          <mat-select placeholder='Owner ' formControlName='user'>
-            <mat-option *ngFor='let user of data.allUsers'
-                        [value]='user'>
-              {{user.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-form-field class="text-input-half-width">
-          <input matInput
-                 placeholder='Priority'
-                 formControlName='priority'>
-        </mat-form-field>
-      </mat-grid-tile>
+  <mat-grid-list cols='2' rowHeight='6:1'>
+    <mat-grid-tile>
+      <mat-form-field class="text-input-half-width">
+        <mat-select placeholder='Owner ' formControlName='user'>
+          <mat-option *ngFor='let user of data.allUsers'
+                      [value]='user'>
+            {{user.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="text-input-half-width">
+        <input matInput
+               placeholder='Priority'
+               formControlName='priority'>
+      </mat-form-field>
+    </mat-grid-tile>
 
-      <mat-grid-tile>
-        <mat-form-field class="text-input-half-width">
-          <mat-select placeholder='Status'
-                      formControlName='status'>
-            <mat-option *ngFor='let status of data.statusList'
-                        value={{status}}>
-              {{status}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="text-input-half-width">
+        <mat-select placeholder='Status'
+                    formControlName='status'>
+          <mat-option *ngFor='let status of data.statusList'
+                      value={{status}}>
+            {{status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
 
-      <mat-grid-tile>
-        <mat-form-field class="text-input-half-width">
-          <input matInput
-                 placeholder='Estimation'
-                 formControlName='estimation'>
-        </mat-form-field>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
+    <mat-grid-tile>
+      <mat-form-field class="text-input-half-width">
+        <input matInput
+               placeholder='Estimation'
+               formControlName='estimation'>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
 
-  <div mat-dialog-actions>
+  <div class="board-item-dialog-footer">
     <div style="float: left; width: 90%">
       <button mat-raised-button (click)='onNoClick()'>Cancel</button>
       <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
