@@ -17,16 +17,19 @@
 .board-user-story-header {
   background-color: #673ab7;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .board-bug-header {
   background-color: #f44336;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .board-task-header {
   background-color: #ffd740;
   color: #000000;
+  cursor: pointer;
 }
 
 .mat-card-title {
