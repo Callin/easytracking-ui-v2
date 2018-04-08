@@ -4,7 +4,6 @@ import {Project} from '../dto/project';
 import {ActivatedRoute} from '@angular/router';
 import {Sprint} from '../dto/sprint';
 import {User} from '../dto/user';
-import {BoardFilterContainer} from './board-filter-container';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {MatDialog} from '@angular/material';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -34,14 +33,13 @@ export class ProjectBoardComponent implements OnInit {
   readonly DONE: string = AppConstants.DONE;
   readonly statusList: string[] = AppConstants.STATUS_LIST;
 
-  filter: BoardFilterContainer = new BoardFilterContainer();
-
   allProjects: Project[] = [];
   allUsers: User[] = [];
+  userFilterFormControl: FormControl = new FormControl(User.getAllUser());
   currentProject: Project = Project.getBlankProject();
   userStories: UserStory[] = [];
   currentSprint: Sprint = new Sprint(this.ALL_ID, null, null, this.ALL_ID, null);
-  currentUser: User = new User(this.ALL_ID, this.ALL_NAME, null);
+  currentUser: User = User.getAllUser();
 
   constructor(private projectService: ProjectService,
               private userService: UserService,
@@ -51,6 +49,8 @@ export class ProjectBoardComponent implements OnInit {
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               public dialog: MatDialog) {
+    this.userFilterFormControl.valueChanges
+      .subscribe(user => this.currentUser = user)
   }
 
   ngOnInit() {
@@ -113,16 +113,24 @@ export class ProjectBoardComponent implements OnInit {
 
   }
 
-  filterItems(item: any, filterContainer: BoardFilterContainer, rowStatus: string): boolean {
+  filterItems(item: any, rowStatus: string): boolean {
 
     // currentSprint - compare the today date with the sprint start and end date - getCurrentProjectByUserAndSprint
-    // currentUser
-    // rowStatus
     if (item.status.toUpperCase() === rowStatus.toUpperCase()) {
-      return true
+      if (this.currentUser.id === AppConstants.ALL_ID) {
+        return true;
+      }
+
+      if (item.user !== null && this.currentUser.name.toUpperCase() === item.user.name.toUpperCase()) {
+        return true
+      }
     }
 
     return false;
+  }
+
+  displayUserNameFn(user?: User): string | undefined {
+    return user ? user.name : undefined;
   }
 
   openNewUserStoryDialog() {

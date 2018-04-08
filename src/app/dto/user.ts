@@ -1,3 +1,5 @@
+import {AppConstants} from "../util/app-constants";
+
 export class User {
   id: number;
   name: string;
@@ -11,5 +13,9 @@ export class User {
 
   static getBlankUser(): User {
     return new User(null, null, null);
+  }
+
+  static getAllUser(): User {
+    return new User(AppConstants.ALL_ID, 'All', null);
   }
 }
