@@ -1,38 +1,29 @@
 <div [formGroup]="data.userForm">
-  <div mat-dialog-title="" >
+  <div mat-dialog-title="">
     User provisioning
   </div>
 
-  <div mat-dialog-content class='project-dialog-content'>
-    <mat-form-field class='project-dialog-input'>
-      <input matInput
-             placeholder='Name'
-             formControlName='name'>
-      <span *ngIf="!data.userForm.get('name').valid && data.userForm.get('name').touched"
-            class="help-block"> Please enter a valid name
+  <mat-form-field class='user-dialog-input'>
+    <input matInput
+           placeholder='Name'
+           formControlName='name'>
+    <span *ngIf="!data.userForm.get('name').valid && data.userForm.get('name').touched"
+          class="help-block"> Please enter a valid name
       </span>
-    </mat-form-field>
+  </mat-form-field>
 
-    <mat-form-field class='project-dialog-input'>
-      <input matInput
-             placeholder='Email'
-             formControlName='email'>
-      <span *ngIf="!data.userForm.get('email').valid && data.userForm.get('email').touched"
-            class="help-block"> Please enter a valid email
+  <mat-form-field class='user-dialog-input'>
+    <input matInput
+           placeholder='Email'
+           formControlName='email'>
+    <span *ngIf="!data.userForm.get('email').valid && data.userForm.get('email').touched"
+          class="help-block"> Please enter a valid email
       </span>
-    </mat-form-field>
+  </mat-form-field>
 
 
-  </div>
-
-  <div mat-dialog-actions>
-    <div style="float: left; width: 90%">
-      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
-      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
-    </div>
-    <!--<div style="float: right; width: 10%">-->
-    <!--<button mat-raised-button color="warn" (click)='deleteProject(data)' *ngIf='!data.isNew'>Delete-->
-    <!--</button>-->
-    <!--</div>-->
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
   </div>
 </div>

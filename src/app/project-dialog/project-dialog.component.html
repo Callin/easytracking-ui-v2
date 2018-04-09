@@ -4,38 +4,28 @@
            placeholder='Title'
            formControlName='title'>
     <span *ngIf="!data.projectForm.get('title').valid && data.projectForm.get('title').touched"
-            class="help-block"> Please enter a valid title
+          class="help-block"> Please enter a valid title
   </span>
   </mat-form-field>
 
-  <div mat-dialog-content class='project-dialog-content'>
-    <mat-form-field class='project-dialog-input-textarea'>
+  <mat-form-field class='project-dialog-input-textarea'>
       <textarea matInput
                 class='project-dialog-input-textarea'
                 placeholder='Description'
                 formControlName='description'
-                matTextareaAutosize matAutosizeMinRows="2"
-                matAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select multiple placeholder="Users" formControlName='users'>
-        <mat-option aria-multiselectable="true"
-                    *ngFor="let user of data.allTheUsers"
-                    [value]="user">
-          {{user.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+                matTextareaAutosize
+                matAutosizeMinRows="2"
+                matAutosizeMaxRows="5">
+      </textarea>
+  </mat-form-field>
+  <div class="edit-users">
+    <button mat-raised-button color="primary" (click)="addUsers(data.allTheUsers, data.projectUsers)">Edit users
+    </button>
+    <span>Assigned users: {{data.projectUsers.length}}</span>
   </div>
 
-  <div mat-dialog-actions>
-    <div style="float: left; width: 90%">
-      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
-      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
-    </div>
-    <!--<div style="float: right; width: 10%">-->
-    <!--<button mat-raised-button color="warn" (click)='deleteProject(data)' *ngIf='!data.isNew'>Delete-->
-    <!--</button>-->
-    <!--</div>-->
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
   </div>
 </div>

@@ -54,6 +54,7 @@ export class OrganizationBoardComponent implements OnInit {
 
     const isNew = true;
     const allTheUsers: User[] = this.userList;
+    let projectUsers: User[] = [];
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
@@ -61,7 +62,8 @@ export class OrganizationBoardComponent implements OnInit {
       data: {
         projectForm,
         isNew,
-        allTheUsers
+        allTheUsers,
+        projectUsers
       }
     });
 
@@ -71,7 +73,7 @@ export class OrganizationBoardComponent implements OnInit {
         let project: Project = Project.getBlankProject();
         project.title = result.projectForm.controls['title'].value;
         project.description = result.projectForm.controls['description'].value;
-        project.userList = result.projectForm.controls['users'].value;
+        project.userList = result.projectUsers;
 
         this.projectService.onCreateProject(project);
       }
@@ -82,18 +84,19 @@ export class OrganizationBoardComponent implements OnInit {
     // show predefined data
     let projectForm: FormGroup = this.formBuilder.group({
       'title': new FormControl(project.title, Validators.required),
-      'description': new FormControl(project.description, null),
-      'users': new FormControl(project.userList)
+      'description': new FormControl(project.description, null)
     });
 
     const allTheUsers: User[] = this.userList;
+    let projectUsers: User[] = project.userList;
+
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      width: '60%',
-      height: '40%',
-      minHeight: 350, // assumes px
+      minWidth: '60%',
+      minHeight: '40%',
       data: {
         projectForm,
-        allTheUsers
+        allTheUsers,
+        projectUsers
       }
     });
 
@@ -102,7 +105,9 @@ export class OrganizationBoardComponent implements OnInit {
       if (result != null) {
         project.title = result.projectForm.controls['title'].value;
         project.description = result.projectForm.controls['description'].value;
-        project.userList = result.projectForm.controls['users'].value;
+        project.userList = result.projectUsers;
+
+        console.log("projectUsers:" +  result.projectUsers.length);
 
         this.projectService.onUpdateProject(project);
       }
@@ -111,7 +116,6 @@ export class OrganizationBoardComponent implements OnInit {
 
   openNewUserDialog() {
     // show predefined data
-
     let userForm: FormGroup = this.formBuilder.group({
       'name': new FormControl(null, Validators.required),
       'email': new FormControl(null, Validators.email)
@@ -119,9 +123,8 @@ export class OrganizationBoardComponent implements OnInit {
 
     const isNew = true;
     const dialogRef = this.dialog.open(UserDialogComponent, {
-      width: '60%',
-      height: '40%',
-      minHeight: 350, // assumes px
+      minWidth: '60%',
+      minHeight: '40%',
       data: {
         userForm,
         isNew
@@ -150,9 +153,8 @@ export class OrganizationBoardComponent implements OnInit {
 
     const isNew = true;
     const dialogRef = this.dialog.open(UserDialogComponent, {
-      width: '60%',
-      height: '40%',
-      minHeight: 350, // assumes px
+      minWidth: '60%',
+      minHeight: '40%',
       data: {
         userForm
       }

@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-user-dialog',
