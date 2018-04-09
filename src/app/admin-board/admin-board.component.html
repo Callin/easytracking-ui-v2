@@ -1,0 +1,63 @@
+<div class="admin-header">
+  <h4>Admin page</h4>
+  <h6>Where organizations can be added, edited or removed.</h6>
+</div>
+
+<div class="admin-content">
+  <mat-tab-group>
+    <mat-tab label="Organizations">
+      <br/>
+      <p>There are {{organizationList.length}} organizations.</p>
+
+      <div class="container-fluid" *ngIf="organizationList.length > 0">
+        <div class="row">
+          <div class="col-1">Id</div>
+          <div class="col">Name</div>
+          <div class="col">Admins</div>
+          <div class="col">Users</div>
+          <div class="col">Board</div>
+          <div class="col">Edit</div>
+          <div class="col">Remove</div>
+        </div>
+
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+
+        <div class="row" *ngFor="let organization of organizationList">
+          <div class="col-1">
+            {{organization.id}}
+          </div>
+          <div class="col">
+            {{organization.name}}
+          </div>
+          <div class="col" (click)="openEditOrganizationUsersDialog(organization)">
+            <span class="edit-users">Edit users</span>
+          </div>
+          <div class="col">
+            <a routerLink="/project/{{organization.id}}" routerLinkActive="active">Project board</a>
+          </div>
+          <div class="col">
+            <mat-icon class="account-icon"
+                      color="link"
+                      matTooltip="Delete project"
+                      (click)="openEditOrganizationDialog(organization)">
+              mode_edit
+            </mat-icon>
+          </div>
+          <div class="col">
+            <mat-icon class="account-icon"
+                      color="link"
+                      matTooltip="Delete project"
+                      (click)="openRemoveOrganizationDialog(organization.id, organization.name, REMOVE_ORGANIZATION)">
+              delete_forever
+            </mat-icon>
+          </div>
+          <mat-divider class="mat-divider-on-board"></mat-divider>
+        </div>
+
+      </div>
+      <br/>
+      <button mat-raised-button color="primary" (click)="openNewOrganizationDialog()" matTooltip="Add new organization">Add new organization</button>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

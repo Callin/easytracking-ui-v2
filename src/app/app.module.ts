@@ -58,12 +58,16 @@ import { OrganizationBoardComponent } from './organization-board/organization-bo
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { RemoveItemDialogComponent } from './remove-item-dialog/remove-item-dialog.component';
 import { ProjectUsersDialogComponent } from './project-users-dialog/project-users-dialog.component';
+import { AdminBoardComponent } from './admin-board/admin-board.component';
+import {OrganizationService} from "./service/organization-service";
+import { OrganizationDialogComponent } from './organization-dialog/organization-dialog.component';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SiginComponent},
   {path: 'organization', component: OrganizationBoardComponent},
   {path: 'project/:id', component: ProjectBoardComponent},
+  {path: 'admin', component: AdminBoardComponent},
   {path: '', component: UserDashboardComponent}
 ];
 
@@ -77,9 +81,12 @@ const appRoutes: Routes = [
     ProjectBoardComponent,
     BoardItemDialogComponent,
     OrganizationBoardComponent,
+    AdminBoardComponent,
     UserDialogComponent,
     RemoveItemDialogComponent,
-    ProjectUsersDialogComponent
+    ProjectUsersDialogComponent,
+    AdminBoardComponent,
+    OrganizationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -147,6 +154,8 @@ const appRoutes: Routes = [
     UserDialogComponent,
     RemoveItemDialogComponent,
     BoardItemDialogComponent,
+    AdminBoardComponent,
+    OrganizationDialogComponent,
     OrganizationBoardComponent],
   providers: [
     ProjectService,
@@ -154,6 +163,7 @@ const appRoutes: Routes = [
     UserStoryService,
     BugService,
     TaskService,
+    OrganizationService,
     SprintService
   ],
   bootstrap: [AppComponent]
