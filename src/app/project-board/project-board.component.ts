@@ -54,30 +54,20 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService.changeProjectList.subscribe(projectList => {
-      this.allProjects = projectList;
-    });
-
-    this.projectService.changeCurrentProject.subscribe(project => {
-      this.currentProject = project;
-    });
-    this.userService.changeUserList.subscribe(userList => {
-      this.allUsers = userList;
-    });
-    this.userStoryService.changeUserStoryList.subscribe(userStories => {
-      this.userStories = userStories;
-    });
-
-
     this.currentProject.id = this.route.snapshot.params['id'];
 
-    this.projectService.onGetCurrentProject(this.currentProject.id);
+    this.projectService.getProjectById(this.currentProject.id)
+      .subscribe(project => this.currentProject = project);
 
-    this.userService.onGetAllUsers();
+    this.userService.getAllUsers()
+      .subscribe(response => this.allUsers = response);
 
-    this.projectService.onGetAllProjects('true');
+    this.projectService.getAllProjects("true")
+      .subscribe((projects) => this.allProjects = projects,
+        (error) => console.log(error));
 
-    this.userStoryService.onGetUserStories(this.currentProject.id);
+    this.userStoryService.getUserStories(this.currentProject.id)
+      .subscribe(response => this.userStories = response);
   }
 
   openEditProjectDialog() {
@@ -107,7 +97,9 @@ export class ProjectBoardComponent implements OnInit {
           this.currentProject.userList = result.projectForm.controls['users'].value;
           // this.currentProject.userList = (<FormArray>result.projectForm.get('users')).value;
 
-          this.projectService.onUpdateProject(this.currentProject);
+          this.projectService.updateProject(this.currentProject).subscribe(
+            (response) => console.log('Project was updated'),
+            (error) => console.log(error));
         }
       });
 
@@ -177,7 +169,9 @@ export class ProjectBoardComponent implements OnInit {
           userStory.project = this.currentProject;
 
           console.log('On create user story: ');
-          this.userStoryService.onCreateUserStory(userStory);
+          this.userStoryService.createUserStory(userStory).subscribe(
+            (response) => this.userStories.push(response),
+            (error) => console.log(error));
         }
       });
 
@@ -224,7 +218,9 @@ export class ProjectBoardComponent implements OnInit {
 
           userStory.user = result.boardItemForm.controls['user'].value;
 
-          this.userStoryService.onUpdateUserStory(userStory);
+          this.userStoryService.updateUserStory(userStory).subscribe(
+            (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
+            (error) => console.log(error));
         }
       });
   }
@@ -272,7 +268,9 @@ export class ProjectBoardComponent implements OnInit {
 
           taskToSave.userStory = userStory;
 
-          this.taskService.onCreateTask(taskToSave, userStory);
+          this.taskService.createTask(taskToSave).subscribe(
+            (response) => userStory.tasks.push(response),
+            (error) => console.log(error));
         }
       });
   }
@@ -326,7 +324,9 @@ export class ProjectBoardComponent implements OnInit {
           parentUserStory.id = userStory.id;
           task.userStory = parentUserStory;
 
-          this.taskService.onUpdateTask(task);
+          this.taskService.updateTask(task).subscribe(
+            (response) => console.log('Task with id: ' + task.id + ' has been updated '),
+            (error) => console.log(error));
         }
       });
   }
@@ -374,7 +374,9 @@ export class ProjectBoardComponent implements OnInit {
 
           bugToSave.userStory = userStory;
 
-          this.bugService.onCreateBug(bugToSave, userStory);
+          this.bugService.createBug(bugToSave).subscribe(
+            (response) => userStory.bugs.push(response),
+            (error) => console.log(error));
         }
       });
 
@@ -428,26 +430,36 @@ export class ProjectBoardComponent implements OnInit {
           parentUserStory.id = userStory.id;
           bug.userStory = parentUserStory;
 
-          this.bugService.onUpdateBug(bug);
+          this.bugService.updateBug(bug).subscribe(
+            (response) => console.log('Bug with id: ' + bug.id + ' has been updated '),
+            (error) => console.log(error));
         }
       });
 
   }
 
   onUserStoryStatusChange(userStory: UserStory) {
-    this.userStoryService.onUpdateUserStory(userStory);
+    this.userStoryService.updateUserStory(userStory).subscribe(
+      (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
+      (error) => console.log(error));
   }
 
   onTaskStatusChange(item: Task) {
-    this.taskService.onUpdateTask(item);
+    this.taskService.updateTask(item).subscribe(
+      (response) => console.log('Task with id: ' + item.id + ' has been updated '),
+      (error) => console.log(error));
   }
 
   onBugStatusChange(item: Bug) {
-    this.bugService.onUpdateBug(item);
+    this.bugService.updateBug(item).subscribe(
+      (response) => console.log('Bug with id: ' + item.id + ' has been updated '),
+      (error) => console.log(error));
   }
 
   onProjectChange(project: Project) {
-    this.userStoryService.onGetUserStories(project.id);
+    this.userStoryService.getUserStories(project.id).subscribe(
+      response => this.userStories = response);
+
     this.currentProject = project;
   }
 

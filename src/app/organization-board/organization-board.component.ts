@@ -30,17 +30,12 @@ export class OrganizationBoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService.changeProjectList.subscribe(projectList => {
-      this.projectList = projectList;
-    });
+    this.projectService.getAllProjects("false").subscribe(
+      (projects) => this.projectList = projects,
+      (error) => console.log(error));
 
-    this.projectService.onGetAllProjects('false');
-
-    this.userService.changeUserList.subscribe(userList => {
-      this.userList = userList;
-    });
-
-    this.userService.onGetAllUsers();
+    this.userService.getAllUsers().subscribe(
+      response => this.userList = response);
   }
 
   openNewProjectDialog() {
@@ -75,7 +70,9 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectUsers;
 
-        this.projectService.onCreateProject(project);
+        this.projectService.createProject(project).subscribe(
+          (response) => this.projectList.push(response),
+          (error) => console.log(error));
       }
     });
   }
@@ -107,9 +104,11 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectUsers;
 
-        console.log("projectUsers:" +  result.projectUsers.length);
+        console.log("projectUsers:" + result.projectUsers.length);
 
-        this.projectService.onUpdateProject(project);
+        this.projectService.updateProject(project).subscribe(
+          (response) => console.log('Project was updated'),
+          (error) => console.log(error));
       }
     });
   }
@@ -138,7 +137,9 @@ export class OrganizationBoardComponent implements OnInit {
         user.name = result.userForm.controls['name'].value;
         user.email = result.userForm.controls['email'].value;
 
-        this.userService.onCreateUser(user);
+        this.userService.createUser(user).subscribe(
+          (response) => this.userList.push(response),
+          (error) => console.log(error));
       }
     });
   }
@@ -166,7 +167,9 @@ export class OrganizationBoardComponent implements OnInit {
         user.name = result.userForm.controls['name'].value;
         user.email = result.userForm.controls['email'].value;
 
-        this.userService.onUpdateUser(user);
+        this.userService.updateUser(user).subscribe(
+          (response) => console.log('User with id: ' + user.id + ' has been updated '),
+          (error) => console.log(error));
       }
     });
   }
@@ -188,9 +191,25 @@ export class OrganizationBoardComponent implements OnInit {
       console.log('Dialog closed');
       if (result != null) {
         if (type === this.REMOVE_PROJECT) {
-          this.projectService.onDeleteProject(id);
+          this.projectService.deleteProject(id).subscribe(
+            (response) => {
+              if (response == null) {
+                const indexOfProject = this.projectList.findIndex(project => project.id === id);
+                this.projectList.splice(indexOfProject, 1);
+                console.log('Project was removed.');
+              }
+            },
+            (error) => console.log(error));
         } else if (type === this.REMOVE_USER) {
-          this.userService.onDeleteUser(id);
+          this.userService.deleteUser(id)
+            .subscribe((response) => {
+                if (response == null) {
+                  const indexOfUser = this.userList.findIndex(user => user.id === id);
+                  this.userList.splice(indexOfUser, 1);
+                  console.log('User was removed.');
+                }
+              },
+              (error) => console.log(error));
         }
       }
     });
@@ -198,7 +217,7 @@ export class OrganizationBoardComponent implements OnInit {
 
   openEditProjectUsersDialog(project: Project) {
     // show predefined data
-    const users = this.userList;
+    const users = this.userList;console.log("list user: " + this.userList.length);
     let userFormControlGroup: FormGroup = this.formBuilder.group({
       'userFormArray': new FormArray([])
     });
@@ -222,7 +241,9 @@ export class OrganizationBoardComponent implements OnInit {
 
         console.log("resultUSerList" + resultUSerList.length);
         project.userList = resultUSerList;
-        this.projectService.onUpdateProject(project);
+        this.projectService.updateProject(project).subscribe(
+          (response) => console.log('Project was updated'),
+          (error) => console.log(error));
       }
     });
   }

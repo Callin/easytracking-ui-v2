@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
@@ -10,22 +10,7 @@ import {AppConstants} from '../util/app-constants';
 @Injectable()
 export class ProjectService {
 
-  allProjects: Project[] = [];
-  currentProject: Project;
-
-  @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
-  @Output() changeCurrentProject: EventEmitter<Project> = new EventEmitter();
-
   constructor(private httpClient: HttpClient) {
-  }
-
-  onGetCurrentProject(projectId: number) { // to be changed to getAllProjectsByUserId
-    this.getProjectById(projectId)
-      .subscribe(project => {
-          this.currentProject = project;
-          this.changeCurrentProject.emit(this.currentProject);
-        }
-      );
   }
 
   getProjectById(projectId: number): Observable<Project> {
@@ -34,17 +19,6 @@ export class ProjectService {
       .catch((error: Response) => {
         return Observable.throw(error);
       });
-  }
-
-  onGetAllProjects(brief: string) { // to be changed to getAllProjectsByUserId
-    this.getAllProjects(brief)
-      .subscribe(
-        (projects) => {
-          this.allProjects = projects;
-          this.changeProjectList.emit(this.allProjects);
-        },
-        (error) => console.log(error)
-      );
   }
 
   getAllProjects(brief: string) { // to be changed to getAllProjectsByUserId
@@ -57,17 +31,6 @@ export class ProjectService {
       });
   }
 
-  onCreateProject(project: Project) {
-    this.createProject(project)
-      .subscribe(
-        (response) => {
-          this.allProjects.push(response);
-          this.changeProjectList.emit(this.allProjects);
-        },
-        (error) => console.log(error)
-      );
-  }
-
   createProject(project: Project) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.post<Project>(AppConstants.PROJECT_URL, project, {headers: header})
@@ -76,43 +39,12 @@ export class ProjectService {
       });
   }
 
-  onUpdateProject(project: Project) {
-    this.updateProject(project)
-      .subscribe(
-        (response) => {
-          console.log('Project was updated');
-        },
-        (error) => console.log(error)
-      );
-  }
-
   updateProject(project: Project) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.put<Project>(AppConstants.PROJECT_URL, project, {headers: header})
       .catch((error: Response) => {
         return Observable.throw(error);
       });
-  }
-
-  onCurrentProjectChange(project: Project) {
-    this.currentProject.id = project.id;
-    this.currentProject.title = project.title;
-    this.changeCurrentProject.emit(this.currentProject);
-  }
-
-  onDeleteProject(projectId: number) {
-    this.deleteProject(projectId).subscribe(
-      (response) => {
-        if (response == null) {
-          const indexOfProject = this.allProjects.findIndex(project => project.id === projectId);
-          this.allProjects.splice(indexOfProject, 1);
-          this.changeProjectList.emit(this.allProjects);
-
-          console.log('Project was removed.');
-        }
-      },
-      (error) => console.log(error)
-    );
   }
 
   deleteProject(projectId: number) {

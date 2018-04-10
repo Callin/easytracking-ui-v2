@@ -28,26 +28,33 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectBoardService.changeProjectList.subscribe(projectList => {
-      this.allProjects = projectList;
-    });
+    // this.projectBoardService.changeProjectList.subscribe(projectList => {
+    //   this.allProjects = projectList;
+    // });
+    //
+    // this.projectBoardService.changeCurrentProject.subscribe(project => {
+    //   this.currentProject = project;
+    // });
 
-    this.projectBoardService.changeCurrentProject.subscribe(project => {
-      this.currentProject = project;
-    });
+    this.projectBoardService.getAllProjects("true")
+      .subscribe(
+        (projects) => {
+          this.allProjects = projects;
+          // this.changeProjectList.emit(this.allProjects);
+        },
+        (error) => console.log(error)
+      );
 
-    this.projectBoardService.onGetAllProjects('true');
-
-    this.userService.changeUserList.subscribe(userList => {
-      this.allUsers = userList;
-    });
-
-    this.userService.onGetAllUsers();
+    this.userService.getAllUsers()
+      .subscribe(response => {
+          this.allUsers = response;
+          // this.changeUserList.emit(this.allUsers);
+        }
+      );
   }
 
   changeCurrentProject(project: Project) {
     this.currentProject = project;
-    this.projectBoardService.onCurrentProjectChange(project);
   }
 
   openNewProjectDialog() {
@@ -80,7 +87,14 @@ export class UserDashboardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectForm.controls['users'].value;
 
-        this.projectBoardService.onCreateProject(project);
+        this.projectBoardService.createProject(project)
+          .subscribe(
+            (response) => {
+              this.allProjects.push(response);
+              // this.changeProjectList.emit(this.allProjects);
+            },
+            (error) => console.log(error)
+          );
       }
     });
 

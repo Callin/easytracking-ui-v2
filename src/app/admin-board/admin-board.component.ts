@@ -20,9 +20,9 @@ export class AdminBoardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.organizationService.changeOrganizationList.subscribe(organizationList => {
-      this.organizationList = organizationList;
-    });
+    this.organizationService.getAllOrganizations().subscribe(
+      (organizations) => this.organizationList = organizations,
+      (error) => console.log(error));
   }
 
   openNewOrganizationDialog() {
