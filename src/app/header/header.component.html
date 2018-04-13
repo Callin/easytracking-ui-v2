@@ -1,0 +1,16 @@
+<div class="row" *ngIf="isAuthenticated">
+  <div class="col">
+    <a routerLink="/" routerLinkActive="active">
+      <img class="easytracking-logo" src="http://e-asistenta.ro/easytracking/easytracking-logo.jpg"
+           alt="Easytracking logo">
+    </a>
+  </div>
+  <div class="col-md-2">
+    <mat-icon class="account-icon" color="link" matTooltip="Go to your organization" routerLink="/organization">
+      account_balance
+    </mat-icon>
+    <mat-icon class="account-icon" color="link" matTooltip="Edit user">account_box</mat-icon>
+    <mat-icon class="account-icon" color="link" matTooltip="Admin" routerLink="/admin">language</mat-icon>
+    <mat-icon class="account-icon" color="link" matTooltip="SignOut" (click)="signOut()">exit_to_app</mat-icon>
+  </div>
+</div>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from "../../service/auth-service";
 
 @Component({
   selector: 'app-sigin',
@@ -8,18 +9,24 @@ import {NgForm} from '@angular/forms';
 })
 export class SiginComponent implements OnInit {
 
-  constructor() { }
+  signInFormGroup: FormGroup;
 
-  ngOnInit() {
+  constructor(private formBuilder: FormBuilder,
+              public authService: AuthService) {
   }
 
-  onSignin(form: NgForm) {
-// call the server
-    const email = form.value.email;
-    const password = form.value.password;
+  ngOnInit() {
+    this.signInFormGroup = this.formBuilder.group({
+      'email': new FormControl(null, Validators.required),
+      'password': new FormControl(null)
+    });
+  }
 
+  onSignin() {
+    const username = this.signInFormGroup.controls['email'].value;
+    const password = this.signInFormGroup.controls['password'].value;
 
-    console.log('Credentials= email: ' + email + ' password: ' + password);
+    this.authService.signIn(username, password);
   }
 
 }
