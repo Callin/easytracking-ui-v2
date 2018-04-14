@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-organization-dialog',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrganizationDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<OrganizationDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
+  onNoClick(): void {
+    console.log('No data was changed');
+    this.dialogRef.close();
+  }
 }

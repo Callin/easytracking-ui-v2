@@ -26,7 +26,7 @@ export class Organization {
     this.projectList = projectList;
   }
 
-  static getBlankProject(): Organization {
+  static getBlankOrganization(): Organization {
     return new Organization(
       null,
       null,

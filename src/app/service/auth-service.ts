@@ -5,8 +5,6 @@ import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./local-storage-servic
 @Injectable()
 export class AuthService {
 
-  isAuthenticated: boolean = false;
-
   @Output() changeIsAuthenticate: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private router: Router,
@@ -15,15 +13,13 @@ export class AuthService {
 
   signIn(username: string, password: string) {
     if (username === 'dragos') {
-      this.isAuthenticated = true;
-      this.changeIsAuthenticate.emit(this.isAuthenticated);
+      this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 1);
       this.router.navigate(['']);
 
     } else if (username === 'bogdan') {
-      this.isAuthenticated = true;
-      this.changeIsAuthenticate.emit(this.isAuthenticated);
+      this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 2);
       this.router.navigate(['']);
@@ -31,8 +27,7 @@ export class AuthService {
   }
 
   signOut() {
-    this.isAuthenticated = false;
-    this.changeIsAuthenticate.emit(this.isAuthenticated);
+    this.changeIsAuthenticate.emit(false);
     this.localStorage.remove("userId");
     this.router.navigate(['/signin']);
   }

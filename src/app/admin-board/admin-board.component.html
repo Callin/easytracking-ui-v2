@@ -30,10 +30,13 @@
             {{organization.name}}
           </div>
           <div class="col" (click)="openEditOrganizationUsersDialog(organization)">
+            <span class="edit-users">Edit admins</span>
+          </div>
+          <div class="col" (click)="openEditOrganizationUsersDialog(organization)">
             <span class="edit-users">Edit users</span>
           </div>
           <div class="col">
-            <a routerLink="/project/{{organization.id}}" routerLinkActive="active">Project board</a>
+            <a routerLink="/organization" routerLinkActive="active">Organization board</a>
           </div>
           <div class="col">
             <mat-icon class="account-icon"

@@ -5,3 +5,9 @@
 .admin-content {
 
 }
+
+.account-icon {
+  font-size: 25px;
+  margin-right: 15px;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Project} from "../dto/project";
 import {MatDialog} from "@angular/material";
 import {UserService} from "../service/user-service";
@@ -9,6 +9,9 @@ import {ProjectDialogComponent} from "../project-dialog/project-dialog.component
 import {UserDialogComponent} from "../user-dialog/user-dialog.component";
 import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
 import {ProjectUsersDialogComponent} from "../project-users-dialog/project-users-dialog.component";
+import {Organization} from "../dto/organization";
+import {OrganizationService} from "../service/organization-service";
+import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "../service/local-storage-service";
 
 @Component({
   selector: 'app-organization-board',
@@ -17,28 +20,29 @@ import {ProjectUsersDialogComponent} from "../project-users-dialog/project-users
 })
 export class OrganizationBoardComponent implements OnInit {
 
-  projectList: Project[] = [];
-  userList: User[] = [];
+  organizationList: Organization[] = [];
 
   REMOVE_PROJECT: string = "project";
   REMOVE_USER: string = "user";
 
   constructor(public dialog: MatDialog,
+              private organizationService: OrganizationService,
               private projectService: ProjectService,
               private userService: UserService,
+              @Inject(LOCAL_STORAGE_SERVICE) public localStorage: LocalStorageService,
               private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.projectService.getAllProjects("false").subscribe(
-      (projects) => this.projectList = projects,
+    this.organizationService.getAllOrganizationsByUserId(this.localStorage.get('userId')).subscribe(
+      (organizations) => {
+        this.organizationList = organizations;
+        console.log("org size: " + this.organizationList.length);
+      },
       (error) => console.log(error));
-
-    this.userService.getAllUsers().subscribe(
-      response => this.userList = response);
   }
 
-  openNewProjectDialog() {
+  openNewProjectDialog(organization: Organization) {
     // show predefined data
 
     let projectForm: FormGroup = this.formBuilder.group({
@@ -48,7 +52,7 @@ export class OrganizationBoardComponent implements OnInit {
     });
 
     const isNew = true;
-    const allTheUsers: User[] = this.userList;
+    const allTheUsers: User[] = organization.userList;
     let projectUsers: User[] = [];
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
@@ -71,20 +75,20 @@ export class OrganizationBoardComponent implements OnInit {
         project.userList = result.projectUsers;
 
         this.projectService.createProject(project).subscribe(
-          (response) => this.projectList.push(response),
+          (response) => organization.projectList.push(response),
           (error) => console.log(error));
       }
     });
   }
 
-  openEditProjectDialog(project: Project) {
+  openEditProjectDialog(project: Project, organization: Organization) {
     // show predefined data
     let projectForm: FormGroup = this.formBuilder.group({
       'title': new FormControl(project.title, Validators.required),
       'description': new FormControl(project.description, null)
     });
 
-    const allTheUsers: User[] = this.userList;
+    const allTheUsers: User[] = organization.userList;
     let projectUsers: User[] = project.userList;
 
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
@@ -104,6 +108,7 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectUsers;
 
+
         console.log("projectUsers:" + result.projectUsers.length);
 
         this.projectService.updateProject(project).subscribe(
@@ -113,7 +118,7 @@ export class OrganizationBoardComponent implements OnInit {
     });
   }
 
-  openNewUserDialog() {
+  openNewUserDialog(organizationId: number, userList: User[]) {
     // show predefined data
     let userForm: FormGroup = this.formBuilder.group({
       'name': new FormControl(null, Validators.required),
@@ -137,8 +142,13 @@ export class OrganizationBoardComponent implements OnInit {
         user.name = result.userForm.controls['name'].value;
         user.email = result.userForm.controls['email'].value;
 
+        let organization = Organization.getBlankOrganization();
+        organization.id = organizationId;
+
+        user.organization = organization;
+
         this.userService.createUser(user).subscribe(
-          (response) => this.userList.push(response),
+          (response) => userList.push(response),
           (error) => console.log(error));
       }
     });
@@ -174,7 +184,7 @@ export class OrganizationBoardComponent implements OnInit {
     });
   }
 
-  openRemoveItemDialog(id: number, name: string, type: string) {
+  openRemoveItemDialog(id: number, name: string, type: string, organization: Organization) {
     // show predefined data
 
     const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
@@ -194,8 +204,8 @@ export class OrganizationBoardComponent implements OnInit {
           this.projectService.deleteProject(id).subscribe(
             (response) => {
               if (response == null) {
-                const indexOfProject = this.projectList.findIndex(project => project.id === id);
-                this.projectList.splice(indexOfProject, 1);
+                const indexOfProject = organization.projectList.findIndex(project => project.id === id);
+                organization.projectList.splice(indexOfProject, 1);
                 console.log('Project was removed.');
               }
             },
@@ -204,8 +214,8 @@ export class OrganizationBoardComponent implements OnInit {
           this.userService.deleteUser(id)
             .subscribe((response) => {
                 if (response == null) {
-                  const indexOfUser = this.userList.findIndex(user => user.id === id);
-                  this.userList.splice(indexOfUser, 1);
+                  const indexOfUser = organization.userList.findIndex(user => user.id === id);
+                  organization.userList.splice(indexOfUser, 1);
                   console.log('User was removed.');
                 }
               },
@@ -215,9 +225,8 @@ export class OrganizationBoardComponent implements OnInit {
     });
   }
 
-  openEditProjectUsersDialog(project: Project) {
+  openEditProjectUsersDialog(project: Project, users: User[]) {
     // show predefined data
-    const users = this.userList;console.log("list user: " + this.userList.length);
     let userFormControlGroup: FormGroup = this.formBuilder.group({
       'userFormArray': new FormArray([])
     });
