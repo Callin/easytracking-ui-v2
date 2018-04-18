@@ -122,10 +122,6 @@ export class ProjectBoardComponent implements OnInit {
 
           userStory.user = result.boardItemForm.controls['user'].value;
 
-          userStory.project = Project.getBlankProject();
-          userStory.project.id = this.currentProject.id;
-          userStory.project.title = this.currentProject.title;
-
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => this.userStories.push(response),
@@ -174,10 +170,6 @@ export class ProjectBoardComponent implements OnInit {
           userStory.estimation = result.boardItemForm.controls['estimation'].value;
 
           userStory.user = result.boardItemForm.controls['user'].value;
-
-          userStory.project = Project.getBlankProject();
-          userStory.project.id = this.currentProject.id;
-          userStory.project.title = this.currentProject.title;
 
           this.userStoryService.updateUserStory(userStory).subscribe(
             (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
@@ -400,10 +392,6 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   onUserStoryStatusChange(userStory: UserStory) {
-    userStory.project = Project.getBlankProject();
-    userStory.project.id = this.currentProject.id;
-    userStory.project.title = this.currentProject.title;
-
     this.userStoryService.updateUserStory(userStory).subscribe(
       (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
       (error) => console.log(error));
