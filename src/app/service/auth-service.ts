@@ -16,12 +16,14 @@ export class AuthService {
       this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 1);
+      this.localStorage.set("organizationId", 1);
       this.router.navigate(['']);
 
     } else if (username === 'bogdan') {
       this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 2);
+      this.localStorage.set("organizationId", 1);
       this.router.navigate(['']);
     }
   }

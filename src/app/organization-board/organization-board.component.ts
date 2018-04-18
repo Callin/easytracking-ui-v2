@@ -1,17 +1,19 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Project} from "../dto/project";
-import {MatDialog} from "@angular/material";
-import {UserService} from "../service/user-service";
-import {ProjectService} from "../service/project-service";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../dto/user";
-import {ProjectDialogComponent} from "../project-dialog/project-dialog.component";
-import {UserDialogComponent} from "../user-dialog/user-dialog.component";
-import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
-import {ProjectUsersDialogComponent} from "../project-users-dialog/project-users-dialog.component";
-import {Organization} from "../dto/organization";
-import {OrganizationService} from "../service/organization-service";
-import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "../service/local-storage-service";
+import {Project} from '../dto/project';
+import {MatDialog} from '@angular/material';
+import {UserService} from '../service/user-service';
+import {ProjectService} from '../service/project-service';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from '../dto/user';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
+import {UserDialogComponent} from '../user-dialog/user-dialog.component';
+import {RemoveItemDialogComponent} from '../remove-item-dialog/remove-item-dialog.component';
+import {ProjectUsersDialogComponent} from '../project-users-dialog/project-users-dialog.component';
+import {Organization} from '../dto/organization';
+import {OrganizationService} from '../service/organization-service';
+import {LOCAL_STORAGE_SERVICE, LocalStorageService} from '../service/local-storage-service';
+import {isNullOrUndefined} from 'util';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-organization-board',
@@ -20,29 +22,37 @@ import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "../service/local-stora
 })
 export class OrganizationBoardComponent implements OnInit {
 
-  organizationList: Organization[] = [];
+  projectList: Project[] = [];
+  userList: User[] = [];
+  organization: Organization;
 
-  REMOVE_PROJECT: string = "project";
-  REMOVE_USER: string = "user";
+  REMOVE_PROJECT: string = 'project';
+  REMOVE_USER: string = 'user';
 
   constructor(public dialog: MatDialog,
               private organizationService: OrganizationService,
               private projectService: ProjectService,
               private userService: UserService,
+              private toastr: ToastrService,
               @Inject(LOCAL_STORAGE_SERVICE) public localStorage: LocalStorageService,
               private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.organizationService.getAllOrganizationsByUserId(this.localStorage.get('userId')).subscribe(
-      (organizations) => {
-        this.organizationList = organizations;
-        console.log("org size: " + this.organizationList.length);
-      },
+    this.projectService.getAllProjectsByOrganizationId(this.localStorage.get('organizationId')).subscribe(
+      (projects) => this.projectList = projects,
+      (error) => console.log(error));
+
+    this.userService.getAllUsersByOrganizationId(this.localStorage.get('organizationId')).subscribe(
+      (users) => this.userList = users,
+      (error) => console.log(error));
+
+    this.organizationService.getOrganization(this.localStorage.get('organizationId'), 'true').subscribe(
+      (organization) => this.organization = organization,
       (error) => console.log(error));
   }
 
-  openNewProjectDialog(organization: Organization) {
+  openNewProjectDialog() {
     // show predefined data
 
     let projectForm: FormGroup = this.formBuilder.group({
@@ -52,7 +62,7 @@ export class OrganizationBoardComponent implements OnInit {
     });
 
     const isNew = true;
-    const allTheUsers: User[] = organization.userList;
+    const allTheUsers: User[] = this.userList;
     let projectUsers: User[] = [];
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
@@ -74,21 +84,28 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectUsers;
 
+        project.organization = this.organization;
+
         this.projectService.createProject(project).subscribe(
-          (response) => organization.projectList.push(response),
-          (error) => console.log(error));
+          (response) => {
+            this.toastr.success(project.title+ ' was created', 'Project add');
+            this.projectList.push(response);},
+          (error) => {
+            this.toastr.error('Project was not created', 'Project add failed');
+            console.log(error);
+          });
       }
     });
   }
 
-  openEditProjectDialog(project: Project, organization: Organization) {
+  openEditProjectDialog(project: Project) {
     // show predefined data
     let projectForm: FormGroup = this.formBuilder.group({
       'title': new FormControl(project.title, Validators.required),
       'description': new FormControl(project.description, null)
     });
 
-    const allTheUsers: User[] = organization.userList;
+    const allTheUsers: User[] = this.userList;
     let projectUsers: User[] = project.userList;
 
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
@@ -108,17 +125,21 @@ export class OrganizationBoardComponent implements OnInit {
         project.description = result.projectForm.controls['description'].value;
         project.userList = result.projectUsers;
 
+        project.organization = this.organization;
 
-        console.log("projectUsers:" + result.projectUsers.length);
+        project.userList.forEach(user => user.organization = this.organization);
 
         this.projectService.updateProject(project).subscribe(
-          (response) => console.log('Project was updated'),
-          (error) => console.log(error));
+          (response) => this.toastr.success(project.title+ ' was updated', 'Project update'),
+          (error) => {
+            this.toastr.error(project.title + ' was not updated', 'Project update failed');
+            console.log(error);
+          });
       }
     });
   }
 
-  openNewUserDialog(organizationId: number, userList: User[]) {
+  openNewUserDialog(userList: User[]) {
     // show predefined data
     let userForm: FormGroup = this.formBuilder.group({
       'name': new FormControl(null, Validators.required),
@@ -142,14 +163,17 @@ export class OrganizationBoardComponent implements OnInit {
         user.name = result.userForm.controls['name'].value;
         user.email = result.userForm.controls['email'].value;
 
-        let organization = Organization.getBlankOrganization();
-        organization.id = organizationId;
-
-        user.organization = organization;
+        user.organization = this.organization;
 
         this.userService.createUser(user).subscribe(
-          (response) => userList.push(response),
-          (error) => console.log(error));
+          (response) => {
+            userList.push(response);
+            this.toastr.success(user.name + ' was created', 'User add');
+          },
+              (error) => {
+                this.toastr.error('User was not created', 'User add failed');
+                console.log(error)
+              });
       }
     });
   }
@@ -177,14 +201,19 @@ export class OrganizationBoardComponent implements OnInit {
         user.name = result.userForm.controls['name'].value;
         user.email = result.userForm.controls['email'].value;
 
+        user.organization = this.organization;
+
         this.userService.updateUser(user).subscribe(
-          (response) => console.log('User with id: ' + user.id + ' has been updated '),
-          (error) => console.log(error));
+          (response) =>  this.toastr.success(user.name + ' was updated', 'User update'),
+          (error) => {
+            this.toastr.error(user.name + ' was not updated', 'User update failed');
+            console.log(error);
+          });
       }
     });
   }
 
-  openRemoveItemDialog(id: number, name: string, type: string, organization: Organization) {
+  openRemoveItemDialog(id: number, name: string, type: string) {
     // show predefined data
 
     const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
@@ -204,33 +233,38 @@ export class OrganizationBoardComponent implements OnInit {
           this.projectService.deleteProject(id).subscribe(
             (response) => {
               if (response == null) {
-                const indexOfProject = organization.projectList.findIndex(project => project.id === id);
-                organization.projectList.splice(indexOfProject, 1);
-                console.log('Project was removed.');
+                const indexOfProject = this.projectList.findIndex(project => project.id === id);
+                this.projectList.splice(indexOfProject, 1);
+                this.toastr.success(name + ' project was removed', 'Project removed');
               }
             },
-            (error) => console.log(error));
+            (error) => {
+              this.toastr.error(name + ' was not removed', 'Project removal failed');
+              console.log(error);});
         } else if (type === this.REMOVE_USER) {
           this.userService.deleteUser(id)
             .subscribe((response) => {
                 if (response == null) {
-                  const indexOfUser = organization.userList.findIndex(user => user.id === id);
-                  organization.userList.splice(indexOfUser, 1);
-                  console.log('User was removed.');
+                  const indexOfUser = this.userList.findIndex(user => user.id === id);
+                  this.userList.splice(indexOfUser, 1);
+                  this.toastr.success(name + ' user was removed', 'User removed');
                 }
               },
-              (error) => console.log(error));
+              (error) => {
+                this.toastr.error(name + ' was not removed', 'User removal failed');
+                console.log(error);});
         }
       }
     });
   }
 
-  openEditProjectUsersDialog(project: Project, users: User[]) {
+  openEditProjectUsersDialog(project: Project) {
     // show predefined data
     let userFormControlGroup: FormGroup = this.formBuilder.group({
       'userFormArray': new FormArray([])
     });
     const userFormArray = userFormControlGroup.get('userFormArray') as FormArray;
+    let users = this.userList;
     users.forEach(user => userFormArray.push(new FormControl(this.isPartOfTheProject(user, project))));
 
     const dialogRef = this.dialog.open(ProjectUsersDialogComponent, {
@@ -246,13 +280,15 @@ export class OrganizationBoardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog closed');
       if (result != null) {
-        const resultUSerList = users.filter((user, i) => userFormControlGroup.value.userFormArray[i] === true);
+        project.userList = users.filter((user, i) => userFormControlGroup.value.userFormArray[i] === true);
+        project.organization = this.organization;
+        project.userList.forEach(user => user.organization = this.organization);
 
-        console.log("resultUSerList" + resultUSerList.length);
-        project.userList = resultUSerList;
         this.projectService.updateProject(project).subscribe(
-          (response) => console.log('Project was updated'),
-          (error) => console.log(error));
+          (response) =>  this.toastr.success(project.title + ' was updated', 'Project update'),
+          (error) => {
+            this.toastr.error(name + ' was not updated', 'Project update failed');
+            console.log(error);});
       }
     });
   }
@@ -264,5 +300,9 @@ export class OrganizationBoardComponent implements OnInit {
     }
 
     return false;
+  }
+
+  isNull(item: any){
+    return isNullOrUndefined(item)
   }
 }

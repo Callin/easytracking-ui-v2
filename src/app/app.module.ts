@@ -65,6 +65,7 @@ import {HeaderComponent} from './header/header.component';
 import {LOCAL_STORAGE, StorageServiceModule} from "ngx-webstorage-service";
 import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./service/local-storage-service";
 import {AuthService} from "./service/auth-service";
+import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -111,6 +112,8 @@ const appRoutes: Routes = [
     MatInputModule,
     MatTabsModule,
     FormsModule,
+    ToastrModule.forRoot(),
+    ToastContainerModule,
     StorageServiceModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
@@ -173,7 +176,8 @@ const appRoutes: Routes = [
     {provide: LOCAL_STORAGE_SERVICE, useExisting: LOCAL_STORAGE},
     LocalStorageService,
     AuthService,
-    SprintService
+    SprintService,
+    ToastrModule
   ],
   bootstrap: [AppComponent]
 })

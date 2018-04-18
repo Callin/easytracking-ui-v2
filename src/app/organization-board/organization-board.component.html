@@ -1,118 +1,113 @@
-<div *ngIf="organizationList === undefined || organizationList === null || organizationList.length === 0 ">No
-  organization is defined
-</div>
+<!--<div *ngIf="organizationList === undefined || organizationList === null || organizationList.length === 0 ">No-->
+  <!--organization is defined-->
+<!--</div>-->
+<div toastContainer></div>
+<h4 *ngIf="!isNull(organization)">{{organization.name}}</h4>
+<mat-tab-group>
+  <mat-tab label="Projects">
+    <!--<mat-divider class="mat-divider-on-board"></mat-divider>-->
+    <br/>
+    <p>There are {{projectList.length}} projects.</p>
 
-<div *ngIf="organizationList.length > 0">
-  <div *ngFor="let organization of organizationList">
-    <h4>{{organization.name}}</h4>
-    <mat-tab-group>
-      <mat-tab label="Projects">
-        <!--<mat-divider class="mat-divider-on-board"></mat-divider>-->
-        <br/>
-        <p>There are {{organization.projectList.length}} projects.</p>
+    <div class="container-fluid" *ngIf="projectList.length > 0">
+      <div class="row">
+        <div class="col-1">Id</div>
+        <div class="col">Title</div>
+        <div class="col">Users</div>
+        <div class="col">Board</div>
+        <div class="col">Edit</div>
+        <div class="col">Remove</div>
+      </div>
 
-        <div class="container-fluid" *ngIf="organization.projectList.length > 0">
-          <div class="row">
-            <div class="col-1">Id</div>
-            <div class="col">Title</div>
-            <div class="col">Users</div>
-            <div class="col">Board</div>
-            <div class="col">Edit</div>
-            <div class="col">Remove</div>
-          </div>
+      <mat-divider class="mat-divider-on-board"></mat-divider>
 
-          <mat-divider class="mat-divider-on-board"></mat-divider>
-
-          <div class="row" *ngFor="let project of organization.projectList">
-            <div class="col-1">
-              {{project.id}}
-            </div>
-            <div class="col">
-              {{project.title}}
-            </div>
-            <div class="col" (click)="openEditProjectUsersDialog(project, organization.userList)">
-              <span class="edit-users">Edit users</span>
-            </div>
-            <div class="col">
-              <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
-            </div>
-            <div class="col">
-              <mat-icon class="account-icon"
-                        color="link"
-                        matTooltip="Delete project"
-                        (click)="openEditProjectDialog(project, organization)">
-                mode_edit
-              </mat-icon>
-            </div>
-            <div class="col">
-              <mat-icon class="account-icon"
-                        color="link"
-                        matTooltip="Delete project"
-                        (click)="openRemoveItemDialog(project.id, project.title, REMOVE_PROJECT, organization)">
-                delete_forever
-              </mat-icon>
-            </div>
-            <mat-divider class="mat-divider-on-board"></mat-divider>
-          </div>
-
+      <div class="row" *ngFor="let project of projectList">
+        <div class="col-1">
+          {{project.id}}
         </div>
-        <br/>
-        <button mat-raised-button color="primary" (click)="openNewProjectDialog(organization)"
-                matTooltip="Add new project">Add new
-          project
-        </button>
-      </mat-tab>
-      <mat-tab label="Users">
-
-        <br/>
-        <p>There are {{organization.userList.length}} users.</p>
-
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-1">Id</div>
-            <div class="col">Name</div>
-            <div class="col">Email</div>
-            <div class="col">Edit</div>
-            <div class="col">Remove</div>
-          </div>
-
-          <mat-divider class="mat-divider-on-board"></mat-divider>
-
-          <div class="row" *ngFor="let user of organization.userList">
-            <div class="col-1">
-              {{user.id}}
-            </div>
-            <div class="col">
-              {{user.name}}
-            </div>
-            <div class="col">
-              {{user.email}}
-            </div>
-            <div class="col">
-              <mat-icon class="account-icon"
-                        color="link"
-                        matTooltip="Edit user"
-                        (click)="openEditUserDialog(user)">
-                mode_edit
-              </mat-icon>
-            </div>
-            <div class="col">
-              <mat-icon class="account-icon"
-                        color="link"
-                        matTooltip="Delete project"
-                        (click)="openRemoveItemDialog(user.id, user.name, REMOVE_USER, organization)">
-                delete_forever
-              </mat-icon>
-            </div>
-            <mat-divider class="mat-divider-on-board"></mat-divider>
-          </div>
+        <div class="col">
+          {{project.title}}
         </div>
-        <br/>
-        <button mat-raised-button color="primary" (click)="openNewUserDialog(organization.id, organization.userList)"
-                matTooltip="Add new user">Add new user
-        </button>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-</div>
+        <div class="col" (click)="openEditProjectUsersDialog(project)">
+          <span class="edit-users">Edit users</span>
+        </div>
+        <div class="col">
+          <a routerLink="/project/{{project.id}}" routerLinkActive="active">Project board</a>
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openEditProjectDialog(project)">
+            mode_edit
+          </mat-icon>
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveItemDialog(project.id, project.title, REMOVE_PROJECT)">
+            delete_forever
+          </mat-icon>
+        </div>
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+      </div>
 
+    </div>
+    <br/>
+    <button mat-raised-button color="primary" (click)="openNewProjectDialog()"
+            matTooltip="Add new project">Add new
+      project
+    </button>
+  </mat-tab>
+  <mat-tab label="Users">
+
+    <br/>
+    <p>There are {{userList.length}} users.</p>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-1">Id</div>
+        <div class="col">Name</div>
+        <div class="col">Email</div>
+        <div class="col">Edit</div>
+        <div class="col">Remove</div>
+      </div>
+
+      <mat-divider class="mat-divider-on-board"></mat-divider>
+
+      <div class="row" *ngFor="let user of userList">
+        <div class="col-1">
+          {{user.id}}
+        </div>
+        <div class="col">
+          {{user.name}}
+        </div>
+        <div class="col">
+          {{user.email}}
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Edit user"
+                    (click)="openEditUserDialog(user)">
+            mode_edit
+          </mat-icon>
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveItemDialog(user.id, user.name, REMOVE_USER)">
+            delete_forever
+          </mat-icon>
+        </div>
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+      </div>
+    </div>
+    <br/>
+    <button mat-raised-button color="primary" (click)="openNewUserDialog(userList)"
+            matTooltip="Add new user">Add new user
+    </button>
+  </mat-tab>
+</mat-tab-group>

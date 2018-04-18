@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {AppConstants} from "../util/app-constants";
 import {Organization} from "../dto/organization";
 
@@ -13,25 +13,37 @@ export class OrganizationService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getOrganization(organizationId: number) {
+  getOrganization(organizationId: number, brief: string) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Organization>(AppConstants.ORGANIZATION_URL + "/" + organizationId, {headers: header})
+
+    let params = new HttpParams();
+    params = params.append('brief', brief);
+
+    return this.httpClient.get<Organization>(AppConstants.ORGANIZATION_URL + "/" + organizationId, {headers: header, params: params})
       .catch((error: Response) => {
         return Observable.throw(error);
       });
   }
 
-  getAllOrganizations() {
+  getAllOrganizations(brief: string) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + '/all', {headers: header})
+
+    let params = new HttpParams();
+    params = params.append('brief', brief);
+
+    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + '/all', {headers: header, params: params})
       .catch((error: Response) => {
         return Observable.throw(error);
       });
   }
 
-  getAllOrganizationsByUserId(userId: number) {
+  getAllOrganizationsByUserId(userId: number, brief: string) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + "/user/" + userId, {headers: header})
+
+    let params = new HttpParams();
+    params = params.append('brief', brief);
+
+    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + "/user/" + userId, {headers: header, params: params})
       .catch((error: Response) => {
         return Observable.throw(error);
       });

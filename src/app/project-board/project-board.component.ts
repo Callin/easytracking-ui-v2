@@ -33,8 +33,6 @@ export class ProjectBoardComponent implements OnInit {
   readonly DONE: string = AppConstants.DONE;
   readonly statusList: string[] = AppConstants.STATUS_LIST;
 
-  allProjects: Project[] = [];
-  allUsers: User[] = [];
   userFilterFormControl: FormControl = new FormControl(User.getAllUser());
   currentProject: Project = Project.getBlankProject();
   userStories: UserStory[] = [];
@@ -59,50 +57,8 @@ export class ProjectBoardComponent implements OnInit {
     this.projectService.getProjectById(this.currentProject.id)
       .subscribe(project => this.currentProject = project);
 
-    this.userService.getAllUsers()
-      .subscribe(response => this.allUsers = response);
-
-    this.projectService.getAllProjects("true")
-      .subscribe((projects) => this.allProjects = projects,
-        (error) => console.log(error));
-
     this.userStoryService.getUserStories(this.currentProject.id)
       .subscribe(response => this.userStories = response);
-  }
-
-  openEditProjectDialog() {
-    let projectForm: FormGroup = this.formBuilder.group({
-      'title': new FormControl(this.currentProject.title, Validators.required),
-      'description': new FormControl(this.currentProject.description),
-      // 'users': this.formBuilder.array([new FormControl(this.currentProject.userList)])
-      'users': new FormControl(this.currentProject.userList)
-    });
-
-    const allTheUsers = this.allUsers;
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      width: '60%',
-      height: '40%',
-      minHeight: 350, // assumes px
-      data: {
-        projectForm,
-        allTheUsers
-      }
-    });
-
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result != null) {
-          this.currentProject.title = result.projectForm.controls['title'].value;
-          this.currentProject.description = result.projectForm.controls['description'].value;
-          this.currentProject.userList = result.projectForm.controls['users'].value;
-          // this.currentProject.userList = (<FormArray>result.projectForm.get('users')).value;
-
-          this.projectService.updateProject(this.currentProject).subscribe(
-            (response) => console.log('Project was updated'),
-            (error) => console.log(error));
-        }
-      });
-
   }
 
   filterItems(item: any, rowStatus: string): boolean {
@@ -166,7 +122,9 @@ export class ProjectBoardComponent implements OnInit {
 
           userStory.user = result.boardItemForm.controls['user'].value;
 
-          userStory.project = this.currentProject;
+          userStory.project = Project.getBlankProject();
+          userStory.project.id = this.currentProject.id;
+          userStory.project.title = this.currentProject.title;
 
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
@@ -178,7 +136,6 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   openExistingUserStoryDialog(userStory: UserStory) {
-
     let boardItemForm: FormGroup = this.formBuilder.group({
       'id': new FormControl(userStory.id),
       'name': new FormControl(userStory.name, Validators.required),
@@ -217,6 +174,10 @@ export class ProjectBoardComponent implements OnInit {
           userStory.estimation = result.boardItemForm.controls['estimation'].value;
 
           userStory.user = result.boardItemForm.controls['user'].value;
+
+          userStory.project = Project.getBlankProject();
+          userStory.project.id = this.currentProject.id;
+          userStory.project.title = this.currentProject.title;
 
           this.userStoryService.updateUserStory(userStory).subscribe(
             (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
@@ -439,6 +400,10 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   onUserStoryStatusChange(userStory: UserStory) {
+    userStory.project = Project.getBlankProject();
+    userStory.project.id = this.currentProject.id;
+    userStory.project.title = this.currentProject.title;
+
     this.userStoryService.updateUserStory(userStory).subscribe(
       (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
       (error) => console.log(error));
@@ -454,13 +419,6 @@ export class ProjectBoardComponent implements OnInit {
     this.bugService.updateBug(item).subscribe(
       (response) => console.log('Bug with id: ' + item.id + ' has been updated '),
       (error) => console.log(error));
-  }
-
-  onProjectChange(project: Project) {
-    this.userStoryService.getUserStories(project.id).subscribe(
-      response => this.userStories = response);
-
-    this.currentProject = project;
   }
 
   getUserName(user: User): string {

@@ -23,7 +23,7 @@ export class AdminBoardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.organizationService.getAllOrganizations().subscribe(
+    this.organizationService.getAllOrganizations('true').subscribe(
       (organizations) => this.organizationList = organizations,
       (error) => console.log(error));
   }

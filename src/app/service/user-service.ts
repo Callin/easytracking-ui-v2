@@ -21,6 +21,14 @@ export class UserService {
       });
   }
 
+  getAllUsersByOrganizationId(organizationId) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<User[]>(AppConstants.USER_URL + '/organization/' + organizationId, {headers: header})
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+  }
+
   createUser(user: User) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.post<User>(AppConstants.USER_URL, user, {headers: header})
