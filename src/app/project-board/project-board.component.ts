@@ -4,7 +4,6 @@ import {Project} from '../dto/project';
 import {ActivatedRoute} from '@angular/router';
 import {Sprint} from '../dto/sprint';
 import {User} from '../dto/user';
-import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {MatDialog} from '@angular/material';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../service/user-service';
@@ -18,6 +17,7 @@ import {BoardItemTypeEnum} from './util/board-item-type-enum';
 import {Bug} from '../dto/bug';
 import {BugService} from '../service/bug-service';
 import {TaskService} from '../service/task-service';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-project-board',
@@ -122,6 +122,8 @@ export class ProjectBoardComponent implements OnInit {
 
           userStory.user = result.boardItemForm.controls['user'].value;
 
+          userStory.project = this.currentProject;
+
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => this.userStories.push(response),
@@ -222,7 +224,14 @@ export class ProjectBoardComponent implements OnInit {
           taskToSave.userStory = userStory;
 
           this.taskService.createTask(taskToSave).subscribe(
-            (response) => userStory.tasks.push(response),
+            (response) => {
+              if (isNullOrUndefined(userStory.tasks)) {
+                userStory.tasks = [];
+              }
+
+              userStory.tasks.push(response);
+
+            },
             (error) => console.log(error));
         }
       });
@@ -328,7 +337,12 @@ export class ProjectBoardComponent implements OnInit {
           bugToSave.userStory = userStory;
 
           this.bugService.createBug(bugToSave).subscribe(
-            (response) => userStory.bugs.push(response),
+            (response) => {
+              if (isNullOrUndefined(userStory.bugs)) {
+                userStory.bugs = [];
+              }
+              userStory.bugs.push(response);
+            },
             (error) => console.log(error));
         }
       });
