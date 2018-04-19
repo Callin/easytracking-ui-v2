@@ -1,37 +1,37 @@
   <div class="row">
-    <div class="col-md-2">
-      <form class="example-form">
-        <mat-form-field>
-          <input matInput
-                 placeholder="Project"
-                 aria-label="Project"
-                 [matAutocomplete]="autocompleteProject">
-          <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
-          <mat-autocomplete #autocompleteProject="matAutocomplete">
-            <!--<mat-option *ngFor="let project of allProjects" [value]="project.title">{{project.title}}-->
-            <!--</mat-option>-->
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
-    </div>
+    <!--<div class="col-md-2">-->
+      <!--<form class="example-form">-->
+        <!--<mat-form-field>-->
+          <!--<input matInput-->
+                 <!--placeholder="Project"-->
+                 <!--aria-label="Project"-->
+                 <!--[matAutocomplete]="autocompleteProject">-->
+          <!--&lt;!&ndash;<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">&ndash;&gt;-->
+          <!--<mat-autocomplete #autocompleteProject="matAutocomplete">-->
+            <!--&lt;!&ndash;<mat-option *ngFor="let project of allProjects" [value]="project.title">{{project.title}}&ndash;&gt;-->
+            <!--&lt;!&ndash;</mat-option>&ndash;&gt;-->
+          <!--</mat-autocomplete>-->
+        <!--</mat-form-field>-->
+      <!--</form>-->
+    <!--</div>-->
 
-    <div class="col-md-2">
-      <form class="example-form">
-        <mat-form-field>
-          <input matInput
-                 placeholder="Sprint"
-                 aria-label="Sprint"
-                 [matAutocomplete]="autocompleteSprint">
-          <!--<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">-->
-          <mat-autocomplete #autocompleteSprint="matAutocomplete">
-            <mat-option *ngFor="let sprint of currentProject.sprintList"
-                        [value]="sprint.sprintNumber">
-              {{sprint.sprintNumber}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
-    </div>
+    <!--<div class="col-md-2">-->
+      <!--<form class="example-form">-->
+        <!--<mat-form-field>-->
+          <!--<input matInput-->
+                 <!--placeholder="Sprint"-->
+                 <!--aria-label="Sprint"-->
+                 <!--[matAutocomplete]="autocompleteSprint">-->
+          <!--&lt;!&ndash;<input matInput placeholder="User" aria-label="User" [matAutocomplete]="auto" [formControl]="stateCtrl">&ndash;&gt;-->
+          <!--<mat-autocomplete #autocompleteSprint="matAutocomplete">-->
+            <!--<mat-option *ngFor="let sprint of currentProject.sprintList"-->
+                        <!--[value]="sprint.sprintNumber">-->
+              <!--{{sprint.sprintNumber}}-->
+            <!--</mat-option>-->
+          <!--</mat-autocomplete>-->
+        <!--</mat-form-field>-->
+      <!--</form>-->
+    <!--</div>-->
 
     <div class="col-md-2">
       <form class="example-form">
@@ -50,10 +50,6 @@
           </mat-autocomplete>
         </mat-form-field>
       </form>
-    </div>
-
-    <div class="col-md-2">
-      Backlog link
     </div>
   </div>
 
@@ -96,6 +92,7 @@
           <div>
             <span>Estimate: {{userStory.estimation}} h</span>
             <span>
+              <mat-icon class="add-task-bug" color="link" matTooltip="Delete story" (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
               <mat-icon class="add-task-bug" color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)" matTooltip="Add new bug">add_box</mat-icon>
@@ -113,13 +110,18 @@
           <mat-card-content>
             <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            <div>
+              <span>Estimate: {{userStory.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete task" (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -135,13 +137,18 @@
             <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{bug.priority}}</div>
-            <div>Estimate: {{bug.estimation}} h</div>
+            <div>
+              <span>Estimate: {{bug.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete bug" (click)="openRemoveBugDialog(bug, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -168,8 +175,9 @@
           <div>
             <span>Estimate: {{userStory.estimation}} h</span>
             <span>
+              <mat-icon class="add-task-bug" color="link" matTooltip="Delete story" (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
               <mat-icon class="add-task-bug" color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">add_box</mat-icon>
-             <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
+              <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)" matTooltip="Add new bug">add_box</mat-icon>
             </span>
           </div>
@@ -186,13 +194,18 @@
           <mat-card-content>
             <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            <div>
+              <span>Estimate: {{task.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete task" (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -208,13 +221,18 @@
             <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{bug.priority}}</div>
-            <div>Estimate: {{bug.estimation}} h</div>
+            <div>
+              <span>Estimate: {{bug.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete bug" (click)="openRemoveBugDialog(bug, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -241,8 +259,9 @@
           <div>
             <span>Estimate: {{userStory.estimation}} h</span>
             <span>
+              <mat-icon class="add-task-bug" color="link" matTooltip="Delete story" (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
               <mat-icon class="add-task-bug" color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">add_box</mat-icon>
-             <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
+              <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)" matTooltip="Add new bug">add_box</mat-icon>
             </span>
           </div>
@@ -259,13 +278,18 @@
           <mat-card-content>
             <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            <div>
+              <span>Estimate: {{task.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete task" (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -281,13 +305,18 @@
             <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{bug.priority}}</div>
-            <div>Estimate: {{bug.estimation}} h</div>
+            <div>
+              <span>Estimate: {{bug.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete bug" (click)="openRemoveBugDialog(bug, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -315,6 +344,7 @@
           <div>
             <span>Estimate: {{userStory.estimation}} h</span>
             <span>
+              <mat-icon class="add-task-bug" color="link" matTooltip="Delete story" (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
               <mat-icon class="add-task-bug" color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)" matTooltip="Add new task">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)" matTooltip="Add new bug">add_box</mat-icon>
@@ -333,13 +363,18 @@
           <mat-card-content>
             <div class="owner">Owner: {{getUserName(task.user)}}</div>
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            <div>
+              <span>Estimate: {{task.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete task" (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>
@@ -355,13 +390,18 @@
             <div class="owner">Owner: {{getUserName(bug.user)}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+              <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug, userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <div>Priority: {{bug.priority}}</div>
-            <div>Estimate: {{bug.estimation}} h</div>
+            <div>
+              <span>Estimate: {{bug.estimation}} h</span>
+              <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete bug" (click)="openRemoveBugDialog(bug, userStory)">delete_forever</mat-icon>
+              </span>
+            </div>
 
           </mat-card-content>
         </mat-card>

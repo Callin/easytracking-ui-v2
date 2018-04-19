@@ -6,7 +6,6 @@ import {Sprint} from '../dto/sprint';
 import {User} from '../dto/user';
 import {MatDialog} from '@angular/material';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../service/user-service';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {UserStory} from '../dto/user-story';
 import {BoardItemStatusEnum} from './util/board-item-status-enum';
@@ -18,6 +17,8 @@ import {Bug} from '../dto/bug';
 import {BugService} from '../service/bug-service';
 import {TaskService} from '../service/task-service';
 import {isNullOrUndefined} from "util";
+import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-project-board',
@@ -40,10 +41,10 @@ export class ProjectBoardComponent implements OnInit {
   currentUser: User = User.getAllUser();
 
   constructor(private projectService: ProjectService,
-              private userService: UserService,
               private userStoryService: UserStoryService,
               private taskService: TaskService,
               private bugService: BugService,
+              private toastr: ToastrService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               public dialog: MatDialog) {
@@ -405,19 +406,127 @@ export class ProjectBoardComponent implements OnInit {
 
   }
 
+  openRemoveStoryDialog(userStory: UserStory) {
+    const type = 'user story';
+    const name = userStory.name;
+    const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        this.userStoryService.deleteUserStory(userStory.id).subscribe(
+          (response) => {
+            if (response == null) {
+              const indexOfUserStory = this.userStories.findIndex(project => project.id === userStory.id);
+              this.userStories.splice(indexOfUserStory, 1);
+              this.toastr.success(userStory.name + ' user story was removed', 'User story removed');
+            }
+          },
+          (error) => {
+            this.toastr.error(userStory.name + ' was not removed', 'User story removal failed');
+            console.log(error);
+          });
+      }
+    });
+  }
+
+  openRemoveTaskDialog(task: Task, userStory: UserStory) {
+    const type = 'task';
+    const name = task.name;
+    const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        this.taskService.deleteTask(task.id)
+          .subscribe((response) => {
+              if (response == null) {
+                const indexOfTask = userStory.tasks.findIndex(item => item.id === task.id);
+                userStory.tasks.splice(indexOfTask, 1);
+                this.toastr.success(task.name + ' task was removed', 'Task removed');
+              }
+            },
+            (error) => {
+              this.toastr.error(task.name + ' was not removed', 'Task removal failed');
+              console.log(error);
+            });
+      }
+    });
+  }
+
+  openRemoveBugDialog(bug: Bug, userStory: UserStory) {
+    const type = 'bug';
+    const name = bug.name;
+    const dialogRef = this.dialog.open(RemoveItemDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        this.bugService.deleteBug(bug.id)
+          .subscribe((response) => {
+              if (response == null) {
+                const indexOfTask = userStory.bugs.findIndex(item => item.id === bug.id);
+                userStory.bugs.splice(indexOfTask, 1);
+                this.toastr.success(bug.name + ' bug was removed', 'Bug removed');
+              }
+            },
+            (error) => {
+              this.toastr.error(bug.name + ' was not removed', 'Bug removal failed');
+              console.log(error);
+            });
+      }
+    });
+  }
+
   onUserStoryStatusChange(userStory: UserStory) {
     this.userStoryService.updateUserStory(userStory).subscribe(
       (response) => console.log('User story with id: ' + userStory.id + ' has been updated '),
       (error) => console.log(error));
   }
 
-  onTaskStatusChange(item: Task) {
+  onTaskStatusChange(item: Task, userStory: UserStory) {
+    let story = UserStory.getBlankUserStory();
+    story.id = userStory.id;
+    story.name = userStory.name;
+
+    item.userStory = story;
+
     this.taskService.updateTask(item).subscribe(
       (response) => console.log('Task with id: ' + item.id + ' has been updated '),
       (error) => console.log(error));
   }
 
-  onBugStatusChange(item: Bug) {
+  onBugStatusChange(item: Bug, userStory: UserStory) {
+    let story = UserStory.getBlankUserStory();
+    story.id = userStory.id;
+    story.name = userStory.name;
+
+    item.userStory = story;
+
     this.bugService.updateBug(item).subscribe(
       (response) => console.log('Bug with id: ' + item.id + ' has been updated '),
       (error) => console.log(error));
