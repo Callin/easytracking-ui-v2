@@ -42,7 +42,7 @@ export class ProjectBoardComponent implements OnInit {
   currentUser: User = User.getAllUser();
 
   multiselectOptionsModel: number[];
-  myOptions: IMultiSelectOption[] = [{id: 100, name: 'ALL'}];
+  myOptions: IMultiSelectOption[] = [];
 
   constructor(private projectService: ProjectService,
               private userStoryService: UserStoryService,
@@ -73,10 +73,6 @@ export class ProjectBoardComponent implements OnInit {
       .subscribe(response => this.userStories = response);
 
 
-  }
-
-  onChange() {
-    console.log(this.multiselectOptionsModel);
   }
 
   filterItems(item: any, rowStatus: string): boolean {
