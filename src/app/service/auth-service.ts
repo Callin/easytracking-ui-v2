@@ -12,14 +12,14 @@ export class AuthService {
   }
 
   signIn(username: string, password: string) {
-    if (username === 'dragos') {
+    if (username === 'dragos' && password === "sapiens") {
       this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 1);
       this.localStorage.set("organizationId", 1);
       this.router.navigate(['']);
 
-    } else if (username === 'bogdan') {
+    } else if (username === 'bogdan' && password === "sapiens") {
       this.changeIsAuthenticate.emit(true);
 
       this.localStorage.set("userId", 2);

@@ -19,6 +19,7 @@ import {TaskService} from '../service/task-service';
 import {isNullOrUndefined} from "util";
 import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
 import {ToastrService} from "ngx-toastr";
+import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from "angular-2-dropdown-multiselect";
 
 @Component({
   selector: 'app-project-board',
@@ -40,6 +41,9 @@ export class ProjectBoardComponent implements OnInit {
   currentSprint: Sprint = new Sprint(this.ALL_ID, null, null, this.ALL_ID, null);
   currentUser: User = User.getAllUser();
 
+  multiselectOptionsModel: number[];
+  myOptions: IMultiSelectOption[] = [{id: 100, name: 'ALL'}];
+
   constructor(private projectService: ProjectService,
               private userStoryService: UserStoryService,
               private taskService: TaskService,
@@ -56,23 +60,41 @@ export class ProjectBoardComponent implements OnInit {
     this.currentProject.id = this.route.snapshot.params['id'];
 
     this.projectService.getProjectById(this.currentProject.id)
-      .subscribe(project => this.currentProject = project);
+      .subscribe(project => {
+        this.currentProject = project;
+        if (this.currentProject.userList !== null && this.currentProject.userList !== undefined) {
+          const tmp: IMultiSelectOption[] = [];
+          this.currentProject.userList.forEach(item => tmp.push({id: item.id, name: item.name}));
+          this.myOptions = tmp;
+        }
+      });
 
     this.userStoryService.getUserStories(this.currentProject.id)
       .subscribe(response => this.userStories = response);
+
+
+  }
+
+  onChange() {
+    console.log(this.multiselectOptionsModel);
   }
 
   filterItems(item: any, rowStatus: string): boolean {
 
     // currentSprint - compare the today date with the sprint start and end date - getCurrentProjectByUserAndSprint
     if (item.status.toUpperCase() === rowStatus.toUpperCase()) {
-      if (this.currentUser.id === AppConstants.ALL_ID) {
-        return true;
+
+      if (!isNullOrUndefined(this.multiselectOptionsModel) && this.multiselectOptionsModel.length > 0 && !isNullOrUndefined(item.user)) {
+
+        if (this.multiselectOptionsModel.findIndex(id => id === item.user.id) !== -1) {
+          return true;
+        } else {
+          return false;
+        }
+
       }
 
-      if (item.user !== null && this.currentUser.name.toUpperCase() === item.user.name.toUpperCase()) {
-        return true
-      }
+      return true;
     }
 
     return false;
@@ -535,4 +557,30 @@ export class ProjectBoardComponent implements OnInit {
   getUserName(user: User): string {
     return (user === null || user === undefined) ? "none" : user.name;
   }
+
+
+  // -------------- Multi select config
+  // Settings configuration
+  multiSelectSettings: IMultiSelectSettings = {
+    enableSearch: true,
+    checkedStyle: 'fontawesome',
+    buttonClasses: 'btn btn-default btn-block',
+    dynamicTitleMaxItems: 1,
+    displayAllSelectedText: true,
+    showCheckAll: true,
+    showUncheckAll: true
+  };
+
+// -------------- Multi select text configuration
+  multiSlectTexts: IMultiSelectTexts = {
+    checkAll: 'Select all',
+    uncheckAll: 'Unselect all',
+    checked: 'user selected',
+    checkedPlural: 'users selected',
+    searchPlaceholder: 'Find',
+    searchEmptyResult: 'Nothing found...',
+    searchNoRenderText: 'Type in search box to see results...',
+    defaultTitle: 'Filter by user',
+    allSelected: 'All selected',
+  };
 }

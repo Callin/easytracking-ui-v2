@@ -66,6 +66,7 @@ import {LOCAL_STORAGE, StorageServiceModule} from "ngx-webstorage-service";
 import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./service/local-storage-service";
 import {AuthService} from "./service/auth-service";
 import {ToastContainerModule, ToastrModule} from "ngx-toastr";
+import {MultiselectDropdownModule} from "angular-2-dropdown-multiselect";
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -114,6 +115,7 @@ const appRoutes: Routes = [
     FormsModule,
     ToastrModule.forRoot(),
     ToastContainerModule,
+    MultiselectDropdownModule,
     StorageServiceModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)

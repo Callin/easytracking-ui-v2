@@ -33,23 +33,33 @@
       <!--</form>-->
     <!--</div>-->
 
+    <!--<div class="col-md-2">-->
+      <!--<form class="example-form">-->
+        <!--<mat-form-field>-->
+          <!--<input matInput-->
+                 <!--placeholder="User"-->
+                 <!--aria-label="User"-->
+                 <!--[matAutocomplete]="autocompleteUser"-->
+                 <!--[formControl]="userFilterFormControl">-->
+          <!--<mat-autocomplete #autocompleteUser="matAutocomplete"-->
+                            <!--[displayWith]="displayUserNameFn">-->
+            <!--<mat-option *ngFor="let user of currentProject.userList"-->
+                        <!--[value]="user">-->
+              <!--{{user.name}}-->
+            <!--</mat-option>-->
+          <!--</mat-autocomplete>-->
+        <!--</mat-form-field>-->
+      <!--</form>-->
+    <!--</div>-->
+
     <div class="col-md-2">
-      <form class="example-form">
-        <mat-form-field>
-          <input matInput
-                 placeholder="User"
-                 aria-label="User"
-                 [matAutocomplete]="autocompleteUser"
-                 [formControl]="userFilterFormControl">
-          <mat-autocomplete #autocompleteUser="matAutocomplete"
-                            [displayWith]="displayUserNameFn">
-            <mat-option *ngFor="let user of currentProject.userList"
-                        [value]="user">
-              {{user.name}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
+      <ss-multiselect-dropdown
+        [options]="myOptions"
+        [texts]="multiSlectTexts"
+        [settings]="multiSelectSettings"
+        [(ngModel)]="multiselectOptionsModel"
+        (ngModelChange)="onChange($event)">
+      </ss-multiselect-dropdown>
     </div>
   </div>
 
