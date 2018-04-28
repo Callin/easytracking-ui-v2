@@ -24,4 +24,13 @@ export class Sprint {
       null,
       null);
   }
+
+  static getAllBlankSprint(): Sprint {
+    return new Sprint(
+      -100,
+      null,
+      null,
+      -100,
+      null);
+  }
 }

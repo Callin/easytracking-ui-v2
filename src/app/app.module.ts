@@ -67,12 +67,16 @@ import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./service/local-storag
 import {AuthService} from "./service/auth-service";
 import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 import {MultiselectDropdownModule} from "angular-2-dropdown-multiselect";
+import { BacklogComponent } from './backlog/backlog.component';
+import { SprintDialogComponent } from './sprint-dialog/sprint-dialog.component';
+import { UserstorySprintDialogComponent } from './userstory-sprint-dialog/userstory-sprint-dialog.component';
 
 const appRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SiginComponent},
   {path: 'organization', component: OrganizationBoardComponent},
   {path: 'project/:id', component: ProjectBoardComponent},
+  {path: 'project/:id/backlog', component: BacklogComponent},
   {path: 'admin', component: AdminBoardComponent},
   {path: '', component: UserDashboardComponent}
 ];
@@ -93,7 +97,10 @@ const appRoutes: Routes = [
     ProjectUsersDialogComponent,
     AdminBoardComponent,
     OrganizationDialogComponent,
-    HeaderComponent
+    HeaderComponent,
+    BacklogComponent,
+    SprintDialogComponent,
+    UserstorySprintDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -101,6 +108,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatRadioModule,
     MatDialogModule,
     MatCardModule,
     MatSelectModule,
@@ -108,6 +116,8 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatGridListModule,
     MatIconModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
@@ -161,6 +171,8 @@ const appRoutes: Routes = [
     SignupComponent,
     SiginComponent,
     ProjectDialogComponent,
+    SprintDialogComponent,
+    UserstorySprintDialogComponent,
     ProjectUsersDialogComponent,
     UserDialogComponent,
     RemoveItemDialogComponent,

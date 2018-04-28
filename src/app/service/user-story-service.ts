@@ -15,7 +15,7 @@ export class UserStoryService {
 
   getUserStories(projectId: number) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<UserStory[]>(AppConstants.USER_STORY_URL + '/projectid/' + projectId, {headers: header})
+    return this.httpClient.get<UserStory[]>(AppConstants.USER_STORY_URL + '/project/' + projectId, {headers: header})
       .catch((error: Response) => {
         return Observable.throw(error);
       });

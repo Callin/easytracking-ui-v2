@@ -1,0 +1,20 @@
+<div>
+  <div class="sprint-dialog-title">
+    <h5>Edit sprint</h5>
+  </div>
+
+  <form class='sprint-dialog-content' [formGroup]="data.sprintFormControlGroup">
+
+      <mat-radio-group formControlName="sprintFormControl">
+        <mat-radio-button class='sprint-dialog-input' *ngFor="let sprint of data.sprintList" [value]="sprint.id">
+          <span *ngIf="sprint.id !== -100">Sprint {{sprint.sprintNumber}}</span>
+          <span *ngIf="sprint.id === -100">Backlog</span>
+        </mat-radio-button>
+      </mat-radio-group>
+
+    <div class="sprint-dialog-footer ">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+  </form>
+</div>

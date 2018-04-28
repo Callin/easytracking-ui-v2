@@ -1,0 +1,31 @@
+<div [formGroup]="data.sprintFormControlGroup">
+  <mat-form-field class='organization-dialog-input'>
+    <input matInput
+           placeholder='Sprint number'
+           formControlName='sprintNumber'>
+    <span *ngIf="!data.sprintFormControlGroup.get('sprintNumber').valid && data.organizationFormGroup.get('sprintNumber').touched"
+          class="help-block"> Please enter a valid number
+  </span>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="startDatepicker"
+           placeholder='Start date'
+           formControlName='startDate'>
+    <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatepicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="endDatepicker"
+    placeholder='End date'
+    formControlName='endDate'>
+    <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatepicker></mat-datepicker>
+  </mat-form-field>
+
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+  </div>
+</div>

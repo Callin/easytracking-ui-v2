@@ -5,7 +5,7 @@ export class AppConstants {
   public static SERVER_URL = '/api';
   public static USER_STORY_URL = AppConstants.SERVER_URL + '/userstory';
   public static PROJECT_URL = AppConstants.SERVER_URL + '/project';
-  public static SPRING_URL = AppConstants.SERVER_URL + '/sprint';
+  public static SPRINT_URL = AppConstants.SERVER_URL + '/sprint';
   public static TASK_URL = AppConstants.SERVER_URL + '/task';
   public static BUG_URL = AppConstants.SERVER_URL + '/bug';
   public static USER_URL = AppConstants.SERVER_URL + '/user';

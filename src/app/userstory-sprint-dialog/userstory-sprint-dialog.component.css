@@ -1,0 +1,22 @@
+.sprint-dialog-title {
+  margin: auto;
+  width: 80%;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+.sprint-dialog-content {
+  padding: 10px;
+}
+
+
+.sprint-dialog-input {
+  width: 100%;
+}
+
+.sprint-dialog-footer {
+  margin: auto;
+  width: 80%;
+  border-top: 1px solid black;
+  padding: 10px;
+}

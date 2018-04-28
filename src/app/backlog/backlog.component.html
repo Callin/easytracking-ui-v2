@@ -1,0 +1,105 @@
+<div toastContainer></div>
+<br/>
+<h5>{{getProjectTitle()}} - Overview </h5>
+
+<div class="container-fluid">
+  <div *ngFor="let sprint of getSprints()">
+    <div class="table-responsive-sm">
+      <div class="sprint-header">
+        <span class="sprint-title">Sprint {{sprint.sprintNumber}}</span>
+        <span
+          class="sprint-date">[{{sprint.startDate | date:'dd-MM-yyyy'}} - {{sprint.endDate | date:'dd-MM-yyyy'}}]</span>
+        <span>
+          <mat-icon class="delete-sprint-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveItemDialog(sprint)">
+              delete_forever
+            </mat-icon>
+        </span>
+      </div>
+      <table class="table backlog-table">
+        <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Story name</th>
+          <th scope="col">Sprint</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Estimation</th>
+          <th scope="col">Status</th>
+          <th scope="col">Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let userStory of getUserStoriesBySprint(sprint)">
+          <td>{{userStory.id}}1</td>
+          <td>{{userStory.name}}</td>
+          <td (click)="openEditSprintDialog(userStory)">
+            <span class="edit-sprint">
+            {{getSprintNumber(userStory.sprint)}}
+            </span>
+          </td>
+          <td>{{userStory.priority}}</td>
+          <td>{{userStory.estimation}}</td>
+          <td>{{userStory.status}}</td>
+          <td>
+            <mat-icon class="account-icon"
+                      color="link"
+                      matTooltip="Delete story">
+              delete_forever
+            </mat-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="openNewSprintDialog()"
+          matTooltip="Add new user">Add new sprint
+  </button>
+
+  <div class="table-responsive-sm">
+    <div class="table-responsive-sm">
+      <div class="sprint-header">
+        <span class="sprint-title">Backlog</span>
+      </div>
+    </div>
+    <table class="table backlog-table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Story name</th>
+        <th scope="col">Sprint</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Estimation</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remove</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let userStory of getUserStoriesWithoutSprint()">
+        <td>{{userStory.id}}1</td>
+        <td>{{userStory.name}}</td>
+        <td (click)="openEditSprintDialog(userStory)">
+            <span class="edit-sprint">
+            {{getSprintNumber(userStory.sprint)}}
+            </span>
+        </td>
+        <td>{{userStory.priority}}</td>
+        <td>{{userStory.estimation}}</td>
+        <td>{{userStory.status}}</td>
+        <td>
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete story">
+            delete_forever
+          </mat-icon>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+

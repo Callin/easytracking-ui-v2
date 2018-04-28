@@ -20,6 +20,7 @@ import {isNullOrUndefined} from "util";
 import {RemoveItemDialogComponent} from "../remove-item-dialog/remove-item-dialog.component";
 import {ToastrService} from "ngx-toastr";
 import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from "angular-2-dropdown-multiselect";
+import {SprintService} from "../service/sprint-service";
 
 @Component({
   selector: 'app-project-board',
@@ -38,7 +39,8 @@ export class ProjectBoardComponent implements OnInit {
   userFilterFormControl: FormControl = new FormControl(User.getAllUser());
   currentProject: Project = Project.getBlankProject();
   userStories: UserStory[] = [];
-  currentSprint: Sprint = new Sprint(this.ALL_ID, null, null, this.ALL_ID, null);
+  currentSprint: Sprint = Sprint.getAllBlankSprint();
+  sprintList: Sprint[] = [];
   currentUser: User = User.getAllUser();
 
   multiselectOptionsModel: number[];
@@ -48,6 +50,7 @@ export class ProjectBoardComponent implements OnInit {
               private userStoryService: UserStoryService,
               private taskService: TaskService,
               private bugService: BugService,
+              private sprintService: SprintService,
               private toastr: ToastrService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -72,28 +75,46 @@ export class ProjectBoardComponent implements OnInit {
     this.userStoryService.getUserStories(this.currentProject.id)
       .subscribe(response => this.userStories = response);
 
-
+    this.sprintService.getSprintsByProjectId(this.route.snapshot.params['id'])
+      .subscribe(response => {
+        this.sprintList = response;
+        this.sprintList.push(Sprint.getAllBlankSprint());
+      });
   }
 
   filterItems(item: any, rowStatus: string): boolean {
 
     // currentSprint - compare the today date with the sprint start and end date - getCurrentProjectByUserAndSprint
-    if (item.status.toUpperCase() === rowStatus.toUpperCase()) {
+    if (this.storyIsPartOfCurrentSprint(item)) {
 
-      if (!isNullOrUndefined(this.multiselectOptionsModel) && this.multiselectOptionsModel.length > 0 && !isNullOrUndefined(item.user)) {
 
-        if (this.multiselectOptionsModel.findIndex(id => id === item.user.id) !== -1) {
-          return true;
-        } else {
-          return false;
+      if (item.status.toUpperCase() === rowStatus.toUpperCase()) {
+
+        if (!isNullOrUndefined(this.multiselectOptionsModel) && this.multiselectOptionsModel.length > 0 && !isNullOrUndefined(item.user)) {
+
+          if (this.multiselectOptionsModel.findIndex(id => id === item.user.id) !== -1) {
+            return true;
+          } else {
+            return false;
+          }
+
         }
 
+        return true;
       }
 
-      return true;
+      return false;
     }
 
     return false;
+  }
+
+  storyIsPartOfCurrentSprint(userStory: UserStory) {
+    if (this.currentSprint.id === this.ALL_ID || isNullOrUndefined(userStory.sprint)) {
+      return true;
+    }
+
+    return userStory.sprint.id === this.currentSprint.id;
   }
 
   displayUserNameFn(user?: User): string | undefined {
