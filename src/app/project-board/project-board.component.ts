@@ -82,11 +82,10 @@ export class ProjectBoardComponent implements OnInit {
       });
   }
 
-  filterItems(item: any, rowStatus: string): boolean {
+  filterItems(item: any, rowStatus: string, sprint: Sprint): boolean {
 
     // currentSprint - compare the today date with the sprint start and end date - getCurrentProjectByUserAndSprint
-    if (this.storyIsPartOfCurrentSprint(item)) {
-
+    if (this.isPartOfCurrentSprint(sprint)) {
 
       if (item.status.toUpperCase() === rowStatus.toUpperCase()) {
 
@@ -109,12 +108,14 @@ export class ProjectBoardComponent implements OnInit {
     return false;
   }
 
-  storyIsPartOfCurrentSprint(userStory: UserStory) {
-    if (this.currentSprint.id === this.ALL_ID || isNullOrUndefined(userStory.sprint)) {
+  isPartOfCurrentSprint(sprint: Sprint) {
+    if (this.currentSprint.id === this.ALL_ID) {
       return true;
+    } else if (!isNullOrUndefined(sprint)) {
+      return sprint.id === this.currentSprint.id;
     }
 
-    return userStory.sprint.id === this.currentSprint.id;
+    return false;
   }
 
   displayUserNameFn(user?: User): string | undefined {
